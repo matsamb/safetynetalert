@@ -1,36 +1,45 @@
 package com.safetynet.alert.entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-public class Persons {
+public class Persons implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	//private or protected or package private for persistent variables
 	@Id
-	@JsonProperty("firstname")
+	@JsonProperty("firstName")
+	@Column(name="first_name")
 	String firstName;
 
-	@JsonProperty("lastname")
+	@Column(name="last_name")
+	@JsonProperty("lastName")
 	String lastName;
 
 	@JsonProperty("address")
-	private String address;
+	String address;
 
 	@JsonProperty("city")
-	private String city;
+	String city;
 
 	@JsonProperty("zip")
-	private Integer zip;
+	Integer zip;
 
 	@JsonProperty("phone")
-	private String phone;
+	String phone;
 
 	@JsonProperty("email")
-	private String email;
+	String email;
 
 	public Persons() {
 	}
