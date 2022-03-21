@@ -6,9 +6,11 @@ import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@IdClass(com.safetynet.alert.entity.PersonsKey.class)
 @Entity
 public class Persons implements Serializable {
 	/**
@@ -21,7 +23,7 @@ public class Persons implements Serializable {
 	@JsonProperty("firstName")
 	@Column(name="first_name")
 	String firstName;
-
+	@Id
 	@Column(name="last_name")
 	@JsonProperty("lastName")
 	String lastName;
@@ -57,6 +59,8 @@ public class Persons implements Serializable {
 		this.phone = phone;
 		this.email = email;
 	}	
+	
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -65,6 +69,7 @@ public class Persons implements Serializable {
 		this.firstName = firstName;
 	}
 	
+
 	public String getLastName() {
 		return firstName;
 	}
