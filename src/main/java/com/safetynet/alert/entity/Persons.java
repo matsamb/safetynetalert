@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
@@ -11,7 +12,8 @@ import javax.persistence.IdClass;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @IdClass(com.safetynet.alert.entity.PersonsKey.class)
-@Entity
+//@Entity
+@Embeddable
 public class Persons implements Serializable {
 	/**
 	 * 
@@ -46,13 +48,12 @@ public class Persons implements Serializable {
 	public Persons() {
 	}
 
-	public Persons(PersonsKey personskey, String firstName, String lastName, String address, String city, Integer zip,
+	public Persons( String firstName, String lastName, String address, String city, Integer zip,
 			String phone, String email) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 
-		//this.personsKey = personskey;
 		this.address = address;
 		this.city = city;
 		this.zip = zip;
@@ -60,7 +61,7 @@ public class Persons implements Serializable {
 		this.email = email;
 	}	
 	
-
+	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -69,9 +70,9 @@ public class Persons implements Serializable {
 		this.firstName = firstName;
 	}
 	
-
+	
 	public String getLastName() {
-		return firstName;
+		return lastName;
 	}
 
 	public void setLastName(String lastName) {

@@ -6,20 +6,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.safetynet.alert.entity.Persons;
 import com.safetynet.alert.repository.SafetynetalertPersonsRepository;
+import com.safetynet.alert.service.SafetynetalertPersonsService;
 
 @RestController
 public class SafetynetalertController {
 
 	@Autowired
-	private SafetynetalertPersonsRepository safetynetalertControllerRepository;
+	private SafetynetalertPersonsService safetynetalertPersonsServiceController;
 	
-	public SafetynetalertController(SafetynetalertPersonsRepository safetynetalertControllerRepository) {
-		this.safetynetalertControllerRepository = safetynetalertControllerRepository;
+	public SafetynetalertController(SafetynetalertPersonsService safetynetalertPersonsServiceController) {
+		this.safetynetalertPersonsServiceController = safetynetalertPersonsServiceController;
 	}
 	
 	@GetMapping("/persons")/*{stationNumber*///}
 	public Iterable<Persons> getAllPersons(){
-		return safetynetalertControllerRepository.findAll();
+		return safetynetalertPersonsServiceController.getAllPersons() ;
 	}
 	/*
 	@GetMapping("/childAlert{address}")

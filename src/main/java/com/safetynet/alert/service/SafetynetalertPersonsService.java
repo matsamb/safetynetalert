@@ -92,4 +92,7 @@ public class SafetynetalertPersonsService {
 		safetynetalertPersonsRepository.saveAll(persons);
 	}
 
+	public Iterable<Persons> getAllPersons(){
+		return safetynetalertPersonsRepository.findAll();
+	}
 }

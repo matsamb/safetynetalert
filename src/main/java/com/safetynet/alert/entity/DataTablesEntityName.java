@@ -8,15 +8,15 @@ import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-//@Entity
-public class DataTableName {
-/*	
+@Entity
+public class DataTablesEntityName {
+	
 	@Id
 	@GeneratedValue(strategy= GenerationType.AUTO)
-	private int id;
-	@JsonProperty
+	int id;
+	@JsonProperty("persons")
 	@Embedded
-	private Persons persons;
+	Iterable<Persons> persons;
 	//private Firestations firestations;
-*/
+
 }
