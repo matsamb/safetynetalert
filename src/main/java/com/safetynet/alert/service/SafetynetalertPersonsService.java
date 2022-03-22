@@ -51,20 +51,20 @@ public class SafetynetalertPersonsService {
 		serviceLogger.trace("json file content turned into a java string");
 
 		String personsJsonArrayString = jsonString.substring(jsonString.indexOf('['), jsonString.indexOf(']') + 1);
-		System.out.println(personsJsonArrayString);
+		//System.out.println(personsJsonArrayString);
 		serviceLogger.trace("json persons array as string correctly extracted from json source file string");
-
+/*
 		String firestationsJsonArrayString = jsonString.substring(jsonString.indexOf('[', jsonString.indexOf(']')),
 					jsonString.indexOf(']', jsonString.indexOf(']') + 1) + 1);
-		System.out.println(firestationsJsonArrayString);
+		//System.out.println(firestationsJsonArrayString); 
 		serviceLogger.trace("json firestations array as string correctly extracted from json source file string");
 		
 		String medicalrecordsJsonArrayString = jsonString.substring(
 					jsonString.indexOf('[', jsonString.indexOf(']', jsonString.indexOf(']') + 1) + 1),
 					jsonString.indexOf('}', jsonString.length() - 2));
-		System.out.println(medicalrecordsJsonArrayString);
+		//System.out.println(medicalrecordsJsonArrayString);
 		serviceLogger.trace("json medicalrecords array as string correctly extracted from json source file string");
-		
+*/		
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		Persons[] personsJavaArray = null;

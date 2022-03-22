@@ -25,25 +25,7 @@ public class SafetynetalertPersonsRunner implements CommandLineRunner {
 	
 	@Override
 	public void run(String... args) throws Exception {
-/*
-		//safetynetalertPersonsService.jsonToDatabase();
-		TypeReference<List<DataTableName>> DataTableNameIterable = new TypeReference<>() {};
-		ObjectMapper DataTableNameMapper = new ObjectMapper();		
+
 		
-		try {
-			String instring = TypeReference.class.getResourceAsStream(
-					"https://s3-eu-west-1.amazonaws.com/course.oc-static.com/projects/DA+Java+EN/P5+/data.json").toString();	
-					
-			List<DataTableName> result = DataTableNameMapper.readValue(instring
-					, DataTableNameIterable) ;
-			System.out.println(result.toString());
-			//safetynetalertPersonsService.saveAllPersons(result);
-			//logger.trace("file reader service get file content correctly");
-		} catch (IOException e) {
-			e.printStackTrace();
-			//logger.error("file reader service can not fetch file content");
-			
-	
-	} */
 	} 
 }

@@ -12,9 +12,9 @@ import javax.persistence.IdClass;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @IdClass(com.safetynet.alert.entity.PersonsKey.class)
-//@Entity
+@Entity
 @Embeddable
-public class Persons implements Serializable {
+public class Persons extends Object implements Serializable {
 	/**
 	 * 
 	 */
