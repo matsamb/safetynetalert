@@ -34,7 +34,8 @@ import org.springframework.core.io.Resource;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.alert.factory.SafetynetalertFactory;
-import com.safetynet.alert.service.SafetynetalertPersonsService;
+import com.safetynet.alert.service.MedicalRecordsService;
+import com.safetynet.alert.service.PersonsService;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
 
@@ -48,14 +49,16 @@ public class SafetynetalertApplication implements CommandLineRunner{
 	}
 	
 	@Autowired
-	private SafetynetalertPersonsService safetynetalertPersonsService;
+	private PersonsService personsService;
+	@Autowired
+	private MedicalRecordsService medicalRecordsService;
 	 
 	@Override
 	public void run(String... args) throws Exception {
 
-		safetynetalertPersonsService.jsonToDatabase();
-		//TypeReference<Map<String,Object>> DataTableNameIterable = new TypeReference<>() {};
-		//ObjectMapper DataTableNameMapper = new ObjectMapper();		
+		personsService.jsonToDatabase();
+		medicalRecordsService.jsonToDatabase();
+		
 		
 		
 	}

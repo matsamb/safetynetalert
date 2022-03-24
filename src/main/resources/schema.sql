@@ -1,11 +1,13 @@
+
 use prodalert;
 DROP TABLE IF EXISTS  persons;
 DROP TABLE IF EXISTS download;
 
-create table download (
+
+/*create table download (
 	id integer not null auto_increment primary key,
 	jsondata text
-	);
+	);*/
 
 CREATE TABLE persons(
 	first_name varchar(255) not null primary key,

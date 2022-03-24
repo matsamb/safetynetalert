@@ -3,7 +3,11 @@ package com.safetynet.alert.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
-//@Embeddable
+import javax.persistence.Embeddable;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.SecondaryTable;
+import javax.persistence.Table;
+
 public final class PersonsKey implements Serializable{
 
 	/**

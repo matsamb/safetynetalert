@@ -14,14 +14,14 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.alert.entity.Persons;
-import com.safetynet.alert.service.SafetynetalertPersonsService;
+import com.safetynet.alert.service.PersonsService;
 
 @Component
 @Order(1)
-public class SafetynetalertPersonsRunner implements CommandLineRunner {
+public class PersonsRunner implements CommandLineRunner {
 
 	@Autowired
-	private SafetynetalertPersonsService safetynetalertPersonsService;
+	private PersonsService safetynetalertPersonsService;
 	
 	@Override
 	public void run(String... args) throws Exception {
