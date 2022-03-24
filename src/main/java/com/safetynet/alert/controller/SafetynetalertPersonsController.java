@@ -8,12 +8,12 @@ import com.safetynet.alert.entity.Persons;
 import com.safetynet.alert.service.PersonsService;
 
 @RestController
-public class SafetynetalertController {
+public class SafetynetalertPersonsController {
 
 	@Autowired
 	private PersonsService personsServiceController;
 	
-	public SafetynetalertController(PersonsService personsServiceController) {
+	public SafetynetalertPersonsController(PersonsService personsServiceController) {
 		this.personsServiceController = personsServiceController;
 	}
 	

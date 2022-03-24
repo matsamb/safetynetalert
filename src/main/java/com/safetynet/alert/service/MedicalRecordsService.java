@@ -102,11 +102,11 @@ public class MedicalRecordsService {
 		
 	}
 	
-	public void saveAllPersons(Iterable<MedicalRecords> medicalRecords) {
+	public void saveAllMedicalRecords(Iterable<MedicalRecords> medicalRecords) {
 		medicalRecordsServiceRepository.saveAll(medicalRecords);
 	}
 
-	public Iterable<MedicalRecords> getAllPersons(){
+	public Iterable<MedicalRecords> getAllMedicalRecords(){
 		return medicalRecordsServiceRepository.findAll();
 	}
 	
