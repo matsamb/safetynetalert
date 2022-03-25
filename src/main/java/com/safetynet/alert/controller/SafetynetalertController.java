@@ -4,23 +4,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.safetynet.alert.entity.Firestations;
+import com.safetynet.alert.entity.MedicalRecords;
 import com.safetynet.alert.entity.Persons;
-import com.safetynet.alert.service.PersonsService;
+import com.safetynet.alert.service.SafetynetService;
 
 @RestController
-public class SafetynetalertPersonsController {
+public class SafetynetalertController {
 
 	@Autowired
-	private PersonsService personsServiceController;
+	private SafetynetService safetynetServiceController;
 	
-	public SafetynetalertPersonsController(PersonsService personsServiceController) {
-		this.personsServiceController = personsServiceController;
+	public SafetynetalertController(SafetynetService safetynetServiceController) {
+		this.safetynetServiceController = safetynetServiceController;
 	}
 	
 	@GetMapping("/persons")/*{stationNumber*///}
 	public Iterable<Persons> getAllPersons(){
-		return personsServiceController.getAllPersons() ;
+		return safetynetServiceController.getAllPersons() ;
 	}
+	
+	@GetMapping("/medicalrecords")/*{stationNumber*///}
+	public Iterable<MedicalRecords> getAllMedicalRecords(){
+		return safetynetServiceController.getAllMedicalRecords() ;
+	}
+	
+	@GetMapping("/firestations")/*{stationNumber*///}
+	public Iterable<Firestations> getAllFirestations(){
+		return safetynetServiceController.getAllFirestations() ;
+	}
+	
 	/*
 	@GetMapping("/childAlert{address}")
 	

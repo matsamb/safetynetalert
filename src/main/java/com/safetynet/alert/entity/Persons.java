@@ -14,10 +14,17 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @IdClass(com.safetynet.alert.entity.PersonsKey.class)
 @Entity
 @Embeddable
-public class Persons extends Object implements Serializable {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Persons implements Serializable {
 	/**
 	 * 
 	 */
@@ -47,7 +54,7 @@ public class Persons extends Object implements Serializable {
 
 	@JsonProperty("email")
 	String email;
-
+/*
 	public Persons() {
 	}
 
@@ -133,14 +140,14 @@ public class Persons extends Object implements Serializable {
 		Persons other = (Persons) obj;
 		return Objects.equals(address, other.address) && Objects.equals(city, other.city)
 				&& Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName)
-				&& Objects.equals(lastName, other.lastName) /*&& Objects.equals(personsKey, other.personsKey)*/
+				&& Objects.equals(lastName, other.lastName)
 				&& Objects.equals(phone, other.phone) && Objects.equals(zip, other.zip);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(address, city, email, firstName, lastName, /*personsKey, */phone, zip);
+		return Objects.hash(address, city, email, firstName, lastName, phone, zip);
 	}
 
-	
+	*/
 }

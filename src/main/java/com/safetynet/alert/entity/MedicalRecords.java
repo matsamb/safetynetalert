@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -18,9 +19,17 @@ import org.springframework.lang.NonNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @IdClass(com.safetynet.alert.entity.PersonsKey.class)
 @Entity
-public class MedicalRecords implements Serializable {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Embeddable
+public class  MedicalRecords implements Serializable {
 
 	/**
 	 * 
@@ -40,25 +49,21 @@ public class MedicalRecords implements Serializable {
 	@Column(name="birth_date")
 	String birthDate;
 	
-	//@Id
 	@Embedded
 	@JsonProperty("medications")
 	@ElementCollection
 	@OrderColumn
-	List<Medications> medications; //= new HashList<>();
+	Medications[] medications;
 	
-	//@Id
 	@Embedded
 	@JsonProperty("allergies")
 	@ElementCollection
 	@OrderColumn
-	@Column(name="allergy", nullable=false,
-    insertable=false, updatable=false)
-	List<Allergies> allergies;// = new HashList<>();
-	
+	Allergies[] allergies;
+	/*
 	public MedicalRecords() {}
 	
-	public MedicalRecords(String firstName, String lastName, String birthDate, List<Medications> medications, List<Allergies> allergies) {
+	public MedicalRecords(String firstName, String lastName, String birthDate, Medications[] medications, Allergies[] allergies) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.birthDate = birthDate;
@@ -90,19 +95,19 @@ public class MedicalRecords implements Serializable {
 		this.birthDate = birthDate;
 	}
 
-	public List<Medications> getMedications() {
+	public Medications[] getMedications() {
 		return medications;
 	}
 
-	public void ListMedications(List<Medications> medications) {
+	public void ListMedications(Medications[] medications) {
 		this.medications = medications;
 	}
 
-	public List<Allergies> getAllergies() {
+	public Allergies[] getAllergies() {
 		return allergies;
 	}
 
-	public void ListAllergies(List<Allergies> allergies) {
+	public void ListAllergies(Allergies[] allergies) {
 		this.allergies = allergies;
 	}
 
@@ -126,5 +131,5 @@ public class MedicalRecords implements Serializable {
 	}
 	
 	
-	
+	*/
 }
