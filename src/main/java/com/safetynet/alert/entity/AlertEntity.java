@@ -16,10 +16,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
+//@Entity
 @Data
 @NoArgsConstructor
-public class DataTablesEntityName implements Serializable {
+public class AlertEntity implements Serializable {
 	
 	/**
 	 * 
@@ -46,7 +46,7 @@ public class DataTablesEntityName implements Serializable {
 	@OrderColumn
 	MedicalRecords[] medicalrecords;
 	
-	public DataTablesEntityName(Persons[] persons, Firestations[] firestations, MedicalRecords[] medicalrecords) {
+	public AlertEntity(Persons[] persons, Firestations[] firestations, MedicalRecords[] medicalrecords) {
 		this.persons = persons;
 		this.firestations = firestations;
 		this.medicalrecords = medicalrecords;

@@ -22,7 +22,7 @@ import com.safetynet.alert.factory.SafetynetalertFactory;
 import com.safetynet.alert.repository.FirestationsRepository;
 import com.safetynet.alert.repository.MedicalRecordsRepository;
 import com.safetynet.alert.repository.PersonsRepository;
-
+ 
 @Service
 public class SafetynetService {
 
