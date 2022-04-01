@@ -5,11 +5,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,10 +20,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.alert.entity.Firestations;
 import com.safetynet.alert.entity.MedicalRecords;
 import com.safetynet.alert.entity.Persons;
+import com.safetynet.alert.entity.StationNumber;
 import com.safetynet.alert.factory.SafetynetalertFactory;
 import com.safetynet.alert.repository.FirestationsRepository;
 import com.safetynet.alert.repository.MedicalRecordsRepository;
 import com.safetynet.alert.repository.PersonsRepository;
+import com.safetynet.alert.repository.StationNumberRepository;
  
 @Service
 public class SafetynetService {
@@ -38,6 +42,9 @@ public class SafetynetService {
 	FirestationsRepository firestationsServiceRepository;
 	
 	@Autowired
+	StationNumberRepository stationNumberServiceRepository;
+	
+	@Autowired
 	SafetynetalertFactory serviceFactory;
 
 	public SafetynetService(PersonsRepository safetynetalertRepository
@@ -49,8 +56,8 @@ public class SafetynetService {
 		this.medicalRecordsServiceRepository = medicalRecordsServiceRepository;
 		this.firestationsServiceRepository = firestationsServiceRepository;
 		this.serviceFactory = serviceFactory;
-	}
-
+	}	
+	
 	public String jsonToString() {
 		Resource resource = serviceFactory.loadSafetynetAlertDataWithClassPathResource();
 		List<String> jsonAsListOfStrings = null;
@@ -67,6 +74,9 @@ public class SafetynetService {
 		safetynetServiceLogger.trace("json file content turned into a java string");
 		return jsonString;
 	}
+
+//URL section 
+	
 	
 // persons section
 	
@@ -97,7 +107,7 @@ public class SafetynetService {
 		List<Persons> personsJavaList = Arrays.asList(personsJavaArray);
 		personsServiceRepository.saveAll(personsJavaList);
 		safetynetServiceLogger.info("json file persons content loaded into database");
-
+System.out.println();
 		
 	}
 
@@ -106,6 +116,11 @@ public class SafetynetService {
 	}
 
 	public Iterable<Persons> getAllPersons(){
+		List<Persons> per = personsServiceRepository.findAll();
+		List<Firestations> fir = firestationsServiceRepository.findAll();
+		//per.forEach(System.out::println);
+		per.get(0).getAddress();
+		System.out.println(per.get(0).getAddress()+"\n"+fir.get(0));
 		return personsServiceRepository.findAll();
 	}
 

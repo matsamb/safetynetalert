@@ -1,18 +1,36 @@
 package com.safetynet.alert.controller;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import java.net.URI;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.safetynet.alert.entity.ChildAlert;
+import com.safetynet.alert.entity.CommunityEmail;
 import com.safetynet.alert.entity.Firestations;
 import com.safetynet.alert.entity.MedicalRecords;
+import com.safetynet.alert.entity.PersonInfo;
 import com.safetynet.alert.entity.Persons;
+import com.safetynet.alert.entity.PhoneAlert;
+import com.safetynet.alert.entity.StationNumber;
+import com.safetynet.alert.repository.ChildAlertRepository;
+import com.safetynet.alert.repository.CommunityEmailRepository;
 import com.safetynet.alert.repository.FirestationsRepository;
 import com.safetynet.alert.repository.MedicalRecordsRepository;
+import com.safetynet.alert.repository.PersonInfoRepository;
 import com.safetynet.alert.repository.PersonsRepository;
+import com.safetynet.alert.repository.PhoneAlertRepository;
+import com.safetynet.alert.repository.StationNumberRepository;
 import com.safetynet.alert.service.SafetynetService;
 
 @RestController
@@ -28,45 +46,88 @@ public class SafetynetalertController {
 	FirestationsRepository firestationsControllerRepository;
 	
 	@Autowired
+	StationNumberRepository stationNumberControllerRepository;
+	
+	@Autowired
+	ChildAlertRepository childAlertControllerRepository;
+	
+	@Autowired
+	PhoneAlertRepository phoneAlertControllerRepository;
+	
+	@Autowired
+	CommunityEmailRepository communityEmailControllerRepository;
+	
+	@Autowired
+	PersonInfoRepository personInfoControllerRepository;
+	
+	@Autowired
 	private SafetynetService safetynetServiceController;
 	
 	public SafetynetalertController(SafetynetService safetynetServiceController
 			,PersonsRepository personsControllerRepository
 			,MedicalRecordsRepository medicalRecordsControllerRepository
 			,FirestationsRepository firestationsControllerRepository
+			,StationNumberRepository stationNumberControllerRepository
+			,PhoneAlertRepository phoneAlertControllerRepository
+			,CommunityEmailRepository communityEmailControllerRepository
+			,PersonInfoRepository personInfoControllerRepository
 			) {
 		this.safetynetServiceController = safetynetServiceController;
 		this.personsControllerRepository = personsControllerRepository;
 		this.medicalRecordsControllerRepository = medicalRecordsControllerRepository;
 		this.firestationsControllerRepository = firestationsControllerRepository;
+		this.stationNumberControllerRepository = stationNumberControllerRepository;
+		this.phoneAlertControllerRepository = phoneAlertControllerRepository;
+		this.communityEmailControllerRepository = communityEmailControllerRepository;
+		this.personInfoControllerRepository = personInfoControllerRepository;
+	}
+//URL	
+	//manque decompte adult et enfant
+	@GetMapping("firestation/stationNumber={stationNumber}")
+	public Iterable<StationNumber> getStationNumber(@PathVariable int stationNumber){
+		return stationNumberControllerRepository.getCustomStationNumberUrl(stationNumber) ;
 	}
 	
-	@GetMapping("/persons")/*{stationNumber*///}
-	public Iterable<Persons> getAllPersons(){
-		return safetynetServiceController.getAllPersons() ;
+	@GetMapping("/phoneAlert/firestation={station}")
+	public Iterable<PhoneAlert> getPhoneAlert(@PathVariable int station){
+		return phoneAlertControllerRepository.getCustomPhoneAlertUrl(station);
 	}
 	
-	@GetMapping("/medicalrecords")/*{stationNumber*///}
-	public Iterable<MedicalRecords> getAllMedicalRecords(){
-		return safetynetServiceController.getAllMedicalRecords() ;
+	@GetMapping("/childAlert/address={address}")
+	public Iterable<ChildAlert> getChildAlert(@PathVariable String address){
+		return childAlertControllerRepository.getCustomChildAlertUrl(address);
+	}
+
+	@GetMapping("/communityEmail/city={city}")//email de tous les habitants
+	public Iterable<CommunityEmail> getCommunityEmail(@PathVariable String city){
+		return communityEmailControllerRepository.getCustomCommunityEmailUrl(city);
 	}
 	
-	@GetMapping("/firestations")/*{stationNumber*///}
-	public Iterable<Firestations> getAllFirestations(){
-		return safetynetServiceController.getAllFirestations() ;
+	@RequestMapping(path = "/personInfo/{firstName}/{lastName}", method = RequestMethod.GET)
+	public Iterable<PersonInfo> getPersonInfo(@RequestParam(value="firstName") String firstName, @RequestParam(value="lastName") String lastName){
+		return personInfoControllerRepository.getPersonInfoUrl(firstName, lastName);
 	}
-	/*
-	@GetMapping("/childAlert{address}")
-	public Iterable
-	*/
-/*	
-	@GetMapping("/phoneAlert{station}")	
-	EntityManager entityManager = 
-	Query q = entityManager.createNativeQuery("select persons.phone, persons.first_name, persons.last_name from persons, firestations where firestations.station=? and persons.address = firestations.address order by last_name asc ;");
-	List<Object[]> empObject= q.getResultList();
-	query
-	"select persons.phone, persons.first_name, persons.last_name from persons, firestations where firestations.station=? and persons.address = firestations.address order by last_name asc ;"
-*/
+	
+//post mapping
+	
+	@PostMapping("/person")
+	public ResponseEntity<Persons> addPersons(@RequestBody Persons persons) {
+		Persons addedProduct = personsControllerRepository.save(persons);
+
+		if (Objects.isNull(addedProduct)) {
+			return ResponseEntity.noContent().build();
+		}
+		URI location = ServletUriComponentsBuilder
+				.fromCurrentRequest()
+				.path("/{firstName}/{lastName}")
+				.buildAndExpand(addedProduct.getFirstName(),addedProduct.getLastName())
+				.toUri();
+		return ResponseEntity.created(location).build();
+	
+	}
+	
+	//@GetMapping("/flood/stations{stations}")
+
 	/*
 	@GetMapping("/fire{address}")
 	
@@ -85,14 +146,8 @@ public class SafetynetalertController {
 	;"
 	
 	
-	@GetMapping("/flood/stations{stations}")//
-	
-	@GetMapping("/personInfo{firstName&LastName")//persons + medicalrecords
-	
-	@GetMapping("/communityEmail{city}")//email de tous les habitants
 	
 	
-	@PostMapping("person")
 	@PutMapping("person")
 	@PatchMapping("person")
 	@DeleteMapping("person")
@@ -108,4 +163,20 @@ public class SafetynetalertController {
 	@DeleteMapping("medicalRecord")
 
 	*/
+	//test	
+		@GetMapping("/persons")
+		public Iterable<Persons> getAllPersons(){
+			return safetynetServiceController.getAllPersons() ;
+		}
+		
+		@GetMapping("/medicalrecords")
+		public Iterable<MedicalRecords> getAllMedicalRecords(){
+			return safetynetServiceController.getAllMedicalRecords() ;
+		}
+		
+		@GetMapping("/firestations")
+		public Iterable<Firestations> getAllFirestations(){
+			return safetynetServiceController.getAllFirestations() ;
+		}
+		
 }

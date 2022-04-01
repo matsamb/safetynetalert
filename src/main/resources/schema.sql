@@ -1,6 +1,17 @@
 /*drop database prodalert;
 create database prodalert;*/
 use prodalert;
+
+/*DROP TABLE IF EXISTS  young;
+create table young (
+	first_name varchar(50),
+	last_name varchar(50),
+	birth_date varchar (50),
+	Age integer,
+	address varchar(100),
+	primary key (first_name, last_name)
+	) ;*/
+
 /*DROP TABLE IF EXISTS  persons;
 
 CREATE TABLE persons(
