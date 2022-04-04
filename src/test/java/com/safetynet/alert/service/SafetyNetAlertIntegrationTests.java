@@ -3,12 +3,35 @@ package com.safetynet.alert.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.context.TestPropertySource;
 
-@SpringBootTest
+import com.safetynet.alert.controller.SafetynetalertController;
+
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @EnableAutoConfiguration
-public class SafetyNetAlertFileReadingIntegrationTests {
+@TestPropertySource(locations = "classpath:applicationIT.properties")
+public class SafetyNetAlertIntegrationTests {
+	
+	@LocalServerPort
+	private int port;
+	
+	@Autowired
+	private TestRestTemplate alertRestTemplate;
+	
+	@Autowired
+	private SafetynetalertController alertController;
+	
+	@Test
+	public void contextLoads() throws Exception{
+		assertThat(alertController).isNotNull();
+	}	
+	
 /*	
 	
 	@Test

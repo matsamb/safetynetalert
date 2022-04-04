@@ -39,6 +39,8 @@ import com.safetynet.alert.repository.PhoneAlertRepository;
 import com.safetynet.alert.repository.StationNumberRepository;
 import com.safetynet.alert.service.SafetynetService;
 
+import lombok.experimental.PackagePrivate;
+
 @RestController
 @Transactional
 public class SafetynetalertController {
@@ -109,21 +111,26 @@ public class SafetynetalertController {
 	public Iterable<CommunityEmail> getCommunityEmail(@PathVariable String city) {
 		return communityEmailControllerRepository.getCustomCommunityEmailUrl(city);
 	}
-
-	@RequestMapping(path = "/personInfo/{firstName}/{lastName}", method = RequestMethod.GET)
+	
+//current
+	
+	@RequestMapping(path = "/personInfo/?firstName={firstName}/?lastName={lastName}", method = RequestMethod.GET)
 	public Iterable<PersonInfo> getPersonInfo(@RequestParam(value = "firstName") String firstName,
 			@RequestParam(value = "lastName") String lastName) {
 		return personInfoControllerRepository.getPersonInfoUrl(firstName, lastName);
 	}
+/*
+	@GetMapping("/flood/stations{stations}")
+	public Iterable<FloodStations> getFloodStations(@PathVariable int station){
+		return floodStationsControllerRepository.getFloodStationsUrl(station);
+	}
 
-	/*
-	 * //@GetMapping("/flood/stations{stations}")
-	 * 
-	 * /*
-	 * 
-	 * @GetMapping("/fire/address={address}")
-	 * 
-	 * ajouter temps et age "select distinct persons.first_name, persons.last_name,
+	@GetMapping("/fire/address={address}")
+	public Iterable<FirePlaces> getFirePlaces(@PathVariable String address){
+		return firePlacesControllerRepository.getFirePlacesUrl(address);
+	} */
+	  
+	 /* ajouter temps et age "select distinct persons.first_name, persons.last_name,
 	 * persons.phone , firestations.station, medical_records_allergies.allergy ,
 	 * medical_records_medications.medication , if(
 	 * DATE_ADD(STR_TO_DATE(medical_records.birth_date,'%m/%d/%Y'),INTERVAL 18 year)

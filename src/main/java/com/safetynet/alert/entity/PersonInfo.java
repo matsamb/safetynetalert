@@ -1,6 +1,8 @@
 package com.safetynet.alert.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 
@@ -9,7 +11,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@IdClass(com.safetynet.alert.entity.PersonsKey.class)
+//@IdClass(com.safetynet.alert.entity.PersonsKey.class)
 @Entity
 @Data
 @NoArgsConstructor
@@ -17,10 +19,8 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 public class PersonInfo {
 
-	@Id
 	String firstName;
 	
-	@Id
 	String lastName;
 	
 	String birthDate;
@@ -32,5 +32,10 @@ public class PersonInfo {
 	String medication;
 	
 	String allergy;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	int id;
+	
 	
 }
