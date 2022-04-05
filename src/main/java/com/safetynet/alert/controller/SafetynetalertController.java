@@ -1,7 +1,11 @@
 package com.safetynet.alert.controller;
 
 import java.net.URI;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +29,7 @@ import com.safetynet.alert.entity.ChildAlert;
 import com.safetynet.alert.entity.CommunityEmail;
 import com.safetynet.alert.entity.FirePlaces;
 import com.safetynet.alert.entity.Firestations;
+import com.safetynet.alert.entity.FloodStations;
 import com.safetynet.alert.entity.MedicalRecords;
 import com.safetynet.alert.entity.PersonsInfo;
 import com.safetynet.alert.entity.Persons;
@@ -35,6 +40,7 @@ import com.safetynet.alert.repository.ChildAlertRepository;
 import com.safetynet.alert.repository.CommunityEmailRepository;
 import com.safetynet.alert.repository.FirePlacesRepository;
 import com.safetynet.alert.repository.FirestationsRepository;
+import com.safetynet.alert.repository.FloodStationsRepository;
 import com.safetynet.alert.repository.MedicalRecordsRepository;
 import com.safetynet.alert.repository.PersonsInfoRepository;
 import com.safetynet.alert.repository.PersonsRepository;
@@ -75,6 +81,9 @@ public class SafetynetalertController {
 	
 	@Autowired
 	FirePlacesRepository firePlacesControllerRepository;
+	
+	@Autowired
+	FloodStationsRepository floodStationsControllerRepository;
 
 	@Autowired
 	private SafetynetService safetynetServiceController;
@@ -87,7 +96,8 @@ public class SafetynetalertController {
 			PhoneAlertRepository phoneAlertControllerRepository,
 			CommunityEmailRepository communityEmailControllerRepository,
 			PersonsInfoRepository personInfoControllerRepository,
-			FirePlacesRepository firePlacesControllerRepository
+			FirePlacesRepository firePlacesControllerRepository,
+			FloodStationsRepository floodStationsControllerRepository
 			) {
 		this.safetynetServiceController = safetynetServiceController;
 		this.personsControllerRepository = personsControllerRepository;
@@ -97,7 +107,8 @@ public class SafetynetalertController {
 		this.phoneAlertControllerRepository = phoneAlertControllerRepository;
 		this.communityEmailControllerRepository = communityEmailControllerRepository;
 		this.personInfoControllerRepository = personInfoControllerRepository;
-		this.firePlacesControllerRepository = firePlacesControllerRepository ;
+		this.firePlacesControllerRepository = firePlacesControllerRepository;
+		this.floodStationsControllerRepository = floodStationsControllerRepository;
 	}
 
 //URL	
@@ -125,36 +136,20 @@ public class SafetynetalertController {
 	@GetMapping("/fire/{address}")
 	public Iterable<FirePlaces> getFirePlaces(@PathVariable String address){
 		return firePlacesControllerRepository.getFirePlacesUrl(address);
-	} 
-	/*
-	@GetMapping("/flood/{stations}")
-	public Iterable<FloodStations> getFloodStations(@PathVariable String station){
-		String[] stationTable = station.split(",");
-		return floodStationsControllerRepository.getFloodStationsUrl(stationTable);
-	}*/
-	
-//current
+	}
 	
 	@GetMapping("/personsInfo/{firstName}&{lastName}")
 	public Iterable<PersonsInfo> getPersonsInfo(@PathVariable(value = "firstName") String firstName,
 			@PathVariable(value = "lastName") String lastName) {
 		return personInfoControllerRepository.getPersonsInfoUrl(firstName, lastName);
 	}	
-	  
-	 /* ajouter temps et age "select distinct persons.first_name, persons.last_name,
-	 * persons.phone , firestations.station, medical_records_allergies.allergy ,
-	 * medical_records_medications.medication , if(
-	 * DATE_ADD(STR_TO_DATE(medical_records.birth_date,'%m/%d/%Y'),INTERVAL 18 year)
-	 * > curdate()) from persons, firestations,
-	 * medical_records_allergies,medical_records_medications where persons.address =
-	 * ? and firestations.address = persons.address and
-	 * (medical_records_allergies.medical_records_first_name = persons.first_name
-	 * and medical_records_allergies.medical_records_last_name = persons.last_name
-	 * and medical_records_medications.medical_records_first_name =
-	 * persons.first_name and medical_records_medications.medical_records_last_name
-	 * = persons.last_name) order by persons.last_name ;"
-	 */
-
+	
+	@GetMapping("/flood/{stations}")
+	public Iterable<FloodStations> getFloodStations(@PathVariable String... stations){
+		List<String> stationsTable = Arrays.asList(stations);//.stream().collect(Collectors.toList());
+		return floodStationsControllerRepository.getFloodStationsUrl(stationsTable);
+	}
+		  
 //persons modifier access
 
 	@PostMapping("/person/new")
