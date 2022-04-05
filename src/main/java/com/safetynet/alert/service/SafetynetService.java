@@ -70,8 +70,10 @@ public class SafetynetService {
 			safetynetServiceLogger.error("file reader service can not fetch file content");
 		}
 			
-		String jsonString = String.join("", jsonAsListOfStrings);
+		String fJsonString = String.join("", jsonAsListOfStrings);
 		safetynetServiceLogger.trace("json file content turned into a java string");
+		String jsonString = fJsonString.replaceAll("\\[\\]", "\\[\"N_A\"\\]");
+		
 		return jsonString;
 	}
 

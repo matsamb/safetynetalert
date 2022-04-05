@@ -23,18 +23,20 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.safetynet.alert.entity.ChildAlert;
 import com.safetynet.alert.entity.CommunityEmail;
+import com.safetynet.alert.entity.FirePlaces;
 import com.safetynet.alert.entity.Firestations;
 import com.safetynet.alert.entity.MedicalRecords;
-import com.safetynet.alert.entity.PersonInfo;
+import com.safetynet.alert.entity.PersonsInfo;
 import com.safetynet.alert.entity.Persons;
 import com.safetynet.alert.entity.PhoneAlert;
 import com.safetynet.alert.entity.StationNumber;
 import com.safetynet.alert.exceptions.SafetynetalertNotFoundException;
 import com.safetynet.alert.repository.ChildAlertRepository;
 import com.safetynet.alert.repository.CommunityEmailRepository;
+import com.safetynet.alert.repository.FirePlacesRepository;
 import com.safetynet.alert.repository.FirestationsRepository;
 import com.safetynet.alert.repository.MedicalRecordsRepository;
-import com.safetynet.alert.repository.PersonInfoRepository;
+import com.safetynet.alert.repository.PersonsInfoRepository;
 import com.safetynet.alert.repository.PersonsRepository;
 import com.safetynet.alert.repository.PhoneAlertRepository;
 import com.safetynet.alert.repository.StationNumberRepository;
@@ -69,7 +71,10 @@ public class SafetynetalertController {
 	CommunityEmailRepository communityEmailControllerRepository;
 
 	@Autowired
-	PersonInfoRepository personInfoControllerRepository;
+	PersonsInfoRepository personInfoControllerRepository;
+	
+	@Autowired
+	FirePlacesRepository firePlacesControllerRepository;
 
 	@Autowired
 	private SafetynetService safetynetServiceController;
@@ -81,7 +86,9 @@ public class SafetynetalertController {
 			StationNumberRepository stationNumberControllerRepository,
 			PhoneAlertRepository phoneAlertControllerRepository,
 			CommunityEmailRepository communityEmailControllerRepository,
-			PersonInfoRepository personInfoControllerRepository) {
+			PersonsInfoRepository personInfoControllerRepository,
+			FirePlacesRepository firePlacesControllerRepository
+			) {
 		this.safetynetServiceController = safetynetServiceController;
 		this.personsControllerRepository = personsControllerRepository;
 		this.medicalRecordsControllerRepository = medicalRecordsControllerRepository;
@@ -90,6 +97,7 @@ public class SafetynetalertController {
 		this.phoneAlertControllerRepository = phoneAlertControllerRepository;
 		this.communityEmailControllerRepository = communityEmailControllerRepository;
 		this.personInfoControllerRepository = personInfoControllerRepository;
+		this.firePlacesControllerRepository = firePlacesControllerRepository ;
 	}
 
 //URL	
@@ -114,26 +122,24 @@ public class SafetynetalertController {
 		return communityEmailControllerRepository.getCustomCommunityEmailUrl(city);
 	}
 	
-//current
-	
-	@GetMapping("/personInfo/firstName={firstName}/lastName={lastName}")
-	public Iterable<PersonInfo> getPersonInfo(@RequestParam(value = "firstName") String firstName,
-			@RequestParam(value = "lastName") String lastName) {
-		return personInfoControllerRepository.getByFirstNameAndLastName(firstName, lastName);
-	}
-	@GetMapping("/fire/address={address}")
+	@GetMapping("/fire/{address}")
 	public Iterable<FirePlaces> getFirePlaces(@PathVariable String address){
 		return firePlacesControllerRepository.getFirePlacesUrl(address);
 	} 
-	
-/*
+	/*
 	@GetMapping("/flood/{stations}")
 	public Iterable<FloodStations> getFloodStations(@PathVariable String station){
 		String[] stationTable = station.split(",");
 		return floodStationsControllerRepository.getFloodStationsUrl(stationTable);
-	}
-
+	}*/
 	
+//current
+	
+	@GetMapping("/personsInfo/{firstName}&{lastName}")
+	public Iterable<PersonsInfo> getPersonsInfo(@PathVariable(value = "firstName") String firstName,
+			@PathVariable(value = "lastName") String lastName) {
+		return personInfoControllerRepository.getPersonsInfoUrl(firstName, lastName);
+	}	
 	  
 	 /* ajouter temps et age "select distinct persons.first_name, persons.last_name,
 	 * persons.phone , firestations.station, medical_records_allergies.allergy ,
