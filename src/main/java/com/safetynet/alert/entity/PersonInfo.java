@@ -11,7 +11,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-//@IdClass(com.safetynet.alert.entity.PersonsKey.class)
+@IdClass(com.safetynet.alert.entity.PersonsKey.class)
 @Entity
 @Data
 @NoArgsConstructor
@@ -19,8 +19,14 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 public class PersonInfo {
 
+	//@Id
+	//@GeneratedValue(strategy=GenerationType.AUTO)
+	int id;
+	
+@Id	
 	String firstName;
 	
+@Id
 	String lastName;
 	
 	String birthDate;
@@ -32,10 +38,6 @@ public class PersonInfo {
 	String medication;
 	
 	String allergy;
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	int id;
 	
 	
 }

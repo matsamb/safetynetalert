@@ -2,6 +2,7 @@ package com.safetynet.alert.controller;
 
 import java.net.URI;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletComponentScan;
@@ -37,6 +38,7 @@ import com.safetynet.alert.repository.PersonInfoRepository;
 import com.safetynet.alert.repository.PersonsRepository;
 import com.safetynet.alert.repository.PhoneAlertRepository;
 import com.safetynet.alert.repository.StationNumberRepository;
+//import com.safetynet.alert.repository.floodStationsControllerRepository;
 import com.safetynet.alert.service.SafetynetService;
 
 import lombok.experimental.PackagePrivate;
@@ -114,21 +116,24 @@ public class SafetynetalertController {
 	
 //current
 	
-	@RequestMapping(path = "/personInfo/?firstName={firstName}/?lastName={lastName}", method = RequestMethod.GET)
+	@GetMapping("/personInfo/firstName={firstName}/lastName={lastName}")
 	public Iterable<PersonInfo> getPersonInfo(@RequestParam(value = "firstName") String firstName,
 			@RequestParam(value = "lastName") String lastName) {
-		return personInfoControllerRepository.getPersonInfoUrl(firstName, lastName);
+		return personInfoControllerRepository.getByFirstNameAndLastName(firstName, lastName);
 	}
-/*
-	@GetMapping("/flood/stations{stations}")
-	public Iterable<FloodStations> getFloodStations(@PathVariable int station){
-		return floodStationsControllerRepository.getFloodStationsUrl(station);
-	}
-
 	@GetMapping("/fire/address={address}")
 	public Iterable<FirePlaces> getFirePlaces(@PathVariable String address){
 		return firePlacesControllerRepository.getFirePlacesUrl(address);
-	} */
+	} 
+	
+/*
+	@GetMapping("/flood/{stations}")
+	public Iterable<FloodStations> getFloodStations(@PathVariable String station){
+		String[] stationTable = station.split(",");
+		return floodStationsControllerRepository.getFloodStationsUrl(stationTable);
+	}
+
+	
 	  
 	 /* ajouter temps et age "select distinct persons.first_name, persons.last_name,
 	 * persons.phone , firestations.station, medical_records_allergies.allergy ,
