@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -41,6 +42,11 @@ public class SafetynetalertController {
 		this.safetynetServiceController = safetynetServiceController;
 	}
 
+	@GetMapping("/home")
+	public @ResponseBody String greeting() {
+		return "WELCOME TO SAFETY NET' ALERT.";
+	}
+	
 //URL	
 	// manque decompte adult et enfant
 	@GetMapping("firestation/{stationNumber}")
@@ -53,7 +59,7 @@ public class SafetynetalertController {
 		return safetynetServiceController.getCustomPhoneAlert(station);
 	}
 	
-	@GetMapping("/childAlert/address={address}")
+	@GetMapping("/childAlert/{address}")
 	public Iterable<ChildAlert> getChildAlert(@PathVariable String address) {
 		return safetynetServiceController.getCustomChildAlert(address);
 	}
@@ -214,7 +220,7 @@ public class SafetynetalertController {
 
 //test read
 
-	@GetMapping("/persons")
+/*	@GetMapping("/persons")
 	public Iterable<Persons> getAllPersons() {
 		return safetynetServiceController.getAllPersons();
 	}
@@ -227,6 +233,6 @@ public class SafetynetalertController {
 	@GetMapping("/firestations")
 	public Iterable<Firestations> getAllFirestations() {
 		return safetynetServiceController.getAllFirestations();
-	}
+	}*/
 
 }

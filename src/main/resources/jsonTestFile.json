@@ -36,6 +36,7 @@
 			"birthdate": "08/06/1945",
 			"medications": [
 				"tradoxidine:400mg"
+				,"aznol:40mg"
 			],
 			"allergies": []
 		}
@@ -46,7 +47,7 @@
 			"medications": [
 				"tradoxidine:400mg"
 			],
-			"allergies": []
+			"allergies": ["aznol"]
 		}
 	]
 }
