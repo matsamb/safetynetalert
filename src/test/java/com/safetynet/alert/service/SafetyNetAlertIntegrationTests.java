@@ -14,10 +14,13 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.MethodMode;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.google.gson.JsonArray;
@@ -32,6 +35,9 @@ public class SafetyNetAlertIntegrationTests {
 
 	@LocalServerPort
 	private int port;
+	
+	//@Autowired
+	//private MockMvc mockMvc;
 
 	@Autowired
 	private TestRestTemplate alertRestTemplate;
@@ -145,7 +151,7 @@ public class SafetyNetAlertIntegrationTests {
 
 	}
 
-	@Disabled
+	//@Disabled
 	@Test
 	public void givenAPersonWhenUpdatedThenItShouldSucceed() throws Exception {
 
@@ -160,20 +166,25 @@ public class SafetyNetAlertIntegrationTests {
 		postHeaders.set("X-COM-LOCATION", "true");
 
 		HttpEntity<Persons> postRequest = new HttpEntity<>(newPerson, postHeaders);
-		ResponseEntity<String> postUnderTest = this.alertRestTemplate.postForEntity(createdUri, postRequest,
+		ResponseEntity<String> postEntity = this.alertRestTemplate.postForEntity(createdUri, postRequest,
 				String.class);
 		
-		Persons updatedPerson = new Persons("Max", "Body", "908 73rd St", "Culver", 97451, "841-875-9218",
-				"mady@imail.com");
+		Persons updatedPerson = new Persons("Max", "Body", "908 73rd St", "Culver", 97451, "841-875-9218","mady@imail.com");
+		HttpHeaders putHeaders = new HttpHeaders(); 
+		postHeaders.set("X-COM-PERSIST", "true");
+		postHeaders.set("X-COM-LOCATION", "true");
+		HttpEntity<Persons> putRequest = new HttpEntity<>(updatedPerson, putHeaders);
 		
-		this.alertRestTemplate.put("http://localhost:"+port+"/person/new/"+newPerson.getFirstName()+"/"+newPerson.getLastName(), Persons.class, updatedPerson); //.put (, Persons.class, newPerson);
-		ResponseEntity<Persons> missingPerson = this.alertRestTemplate.getForEntity("http://localhost:"+port+"/person/new/"+newPerson.getFirstName()+"/"+newPerson.getLastName(), Persons.class, updatedPerson);
+		// this.alertRestTemplate.getForEntity("http://localhost:"+port+"/person/new/"+newPerson.getFirstName()+"/"+newPerson.getLastName(), putRequest, String.class);
 		
-		//assertThat(201).isEqualTo(postUnderTest.getStatusCodeValue());
-		assertThat(missingPerson.getBody()).isEqualTo(updatedPerson);
-		//assertThat(alertRestTemplate.)
-		
+		ResponseEntity<Persons> actualPerson = this.alertRestTemplate.exchange("http://localhost:"+port+"/person/update/"+newPerson.getFirstName()+"/"+newPerson.getLastName(), HttpMethod.PUT, putRequest, Persons.class) ; //.put (, Persons.class, newPerson);
+
 		this.alertRestTemplate.delete("http://localhost:"+port+"/person/delete/"+newPerson.getFirstName()+"/"+newPerson.getLastName());
+
+		
+		assertThat(201).isEqualTo(postEntity.getStatusCodeValue());
+		assertThat(200).isEqualTo(actualPerson.getStatusCodeValue());	
+		assertThat(actualPerson.getBody()).isEqualTo(updatedPerson);		
 
 	}
 	

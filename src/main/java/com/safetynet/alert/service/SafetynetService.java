@@ -202,7 +202,7 @@ public class SafetynetService {
 		System.out.println();
 
 	}
-
+/*
 	public void saveAllPersons(Iterable<Persons> persons) {
 		personsServiceRepository.saveAll(persons);
 	}
@@ -214,7 +214,7 @@ public class SafetynetService {
 		per.get(0).getAddress();
 		System.out.println(per.get(0).getAddress() + "\n" + fir.get(0));
 		return personsServiceRepository.findAll();
-	}
+	}*/
 
 // medical records section	
 
@@ -264,14 +264,14 @@ public class SafetynetService {
 		safetynetServiceLogger.info("json file medicalrecords content loaded into database");
 
 	}
-
+/*
 	public void saveAllMedicalRecords(Iterable<MedicalRecords> medicalRecords) {
 		medicalRecordsServiceRepository.saveAll(medicalRecords);
 	}
 
 	public Iterable<MedicalRecords> getAllMedicalRecords() {
 		return medicalRecordsServiceRepository.findAll();
-	}
+	}*/
 
 //fire stations section
 
@@ -321,13 +321,13 @@ public class SafetynetService {
 		safetynetServiceLogger.info("json file firestations content loaded into database");
 
 	}
-
+/*
 	public void saveAllFirestations(Iterable<Firestations> firestations) {
 		firestationsServiceRepository.saveAll(firestations);
 	}
 
 	public Iterable<Firestations> getAllFirestations() {
 		return firestationsServiceRepository.findAll();
-	}
+	}*/
 
 }
