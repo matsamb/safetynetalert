@@ -26,6 +26,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.safetynet.alert.controller.SafetynetalertController;
+import com.safetynet.alert.entity.Allergies;
+import com.safetynet.alert.entity.Firestations;
+import com.safetynet.alert.entity.MedicalRecords;
+import com.safetynet.alert.entity.Medications;
 import com.safetynet.alert.entity.Persons;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -119,6 +123,8 @@ public class SafetyNetAlertIntegrationTests {
 
 	}
 
+//Persons modifier
+	
 	@Test
 	// @DirtiesContext(methodMode = MethodMode.BEFORE_METHOD)
 	public void givenAPersonWhenPostedThenItShouldSucceed() throws Exception {
@@ -142,16 +148,69 @@ public class SafetyNetAlertIntegrationTests {
 				+ newPerson.getLastName());
 		
 		assertThat(201).isEqualTo(postUnderTest.getStatusCodeValue());
-		/*
-		 * URI location =
-		 * ServletUriComponentsBuilder.fromHttpUrl("http://localhost:"+port+"/person").
-		 * path("/{firstName}/{lastName}") .buildAndExpand(addedPerson.getFirstName(),
-		 * addedPerson.getLastName()).toUri();
-		 */
-
+		
 	}
 
-	//@Disabled
+	@Test
+	// @DirtiesContext(methodMode = MethodMode.BEFORE_METHOD)
+	public void givenAMedicalRecordsWhenPostedThenItShouldSucceed() throws Exception {
+
+		final String postURL = "http://localhost:" + port + "/medicalRecord";
+		URI createdUri = new URI(postURL);
+
+		MedicalRecords createdMedicalRecord = new MedicalRecords("Max", "Body", "03/15/1965", null, null);
+		Medications medication = new Medications("N/A"); 
+		Medications[] na = {medication};
+		createdMedicalRecord.setMedications(na);
+
+		Allergies allergy = new Allergies("N/A");
+		Allergies[] al = {allergy};
+		createdMedicalRecord.setAllergies(al);
+		
+		HttpHeaders postHeaders = new HttpHeaders();
+		postHeaders.set("X-COM-PERSIST", "true");
+		postHeaders.set("X-COM-LOCATION", "true");
+
+		HttpEntity<MedicalRecords> postMedicalRequest = new HttpEntity<>(createdMedicalRecord, postHeaders);
+
+		ResponseEntity<String> postUnderTest = this.alertRestTemplate.postForEntity(createdUri, postMedicalRequest,
+				String.class);
+
+		this.alertRestTemplate.delete("http://localhost:" + port + "/medicalRecord/delete/" + createdMedicalRecord.getFirstName() + "/"
+				+ createdMedicalRecord.getLastName());
+		
+		assertThat(201).isEqualTo(postUnderTest.getStatusCodeValue());
+		
+	}
+	
+	
+	@Test
+	// @DirtiesContext(methodMode = MethodMode.BEFORE_METHOD)
+	public void givenAFirestationWhenPostedThenItShouldSucceed() throws Exception {
+
+		final String postURL = "http://localhost:" + port + "/firestation/new";
+		URI createdUri = new URI(postURL);
+
+		Firestations createdStationRecord = new Firestations("11 Max St", 5);
+		
+		HttpHeaders postHeaders = new HttpHeaders();
+		postHeaders.set("X-COM-PERSIST", "true");
+		postHeaders.set("X-COM-LOCATION", "true");
+
+		HttpEntity<Firestations> postMedicalRequest = new HttpEntity<>(createdStationRecord, postHeaders);
+
+		ResponseEntity<String> postUnderTest = this.alertRestTemplate.postForEntity(createdUri, postMedicalRequest,
+				String.class);
+
+		this.alertRestTemplate.delete("http://localhost:" + port + "/firestation/delete/" + createdStationRecord.getAddress());
+		
+		assertThat(201).isEqualTo(postUnderTest.getStatusCodeValue());
+		
+	}
+
+	
+
+	
 	@Test
 	public void givenAPersonWhenUpdatedThenItShouldSucceed() throws Exception {
 
@@ -212,77 +271,6 @@ public class SafetyNetAlertIntegrationTests {
 		assertThat(404).isEqualTo(missingPerson.getStatusCodeValue());
 	}
 
-	/*
-	 * @Test void givenPersons() throws Exception{ JsonArray persons =
-	 * [{"firstName":"Allison","lastName":"Boyd","address":"112 Steppes Pl","city":
-	 * "Culver","zip":97451,"phone":"841-874-9888","email":"aly@imail.com"},{
-	 * "firstName":"Brian","lastName":"Stelzer","address":"947 E. Rose Dr","city":
-	 * "Culver","zip":97451,"phone":"841-874-7784","email":"bstel@email.com"},{
-	 * "firstName":"Clive","lastName":"Ferguson","address":"748 Townings Dr","city":
-	 * "Culver","zip":97451,"phone":"841-874-6741","email":"clivfd@ymail.com"},{
-	 * "firstName":"Eric","lastName":"Cadigan","address":"951 LoneTree Rd","city":
-	 * "Culver","zip":97451,"phone":"841-874-7458","email":"gramps@email.com"},{
-	 * "firstName":"Felicia","lastName":"Boyd","address":"1509 Culver St","city":
-	 * "Culver","zip":97451,"phone":"841-874-6544","email":"jaboyd@email.com"},{
-	 * "firstName":"Foster","lastName":"Shepard","address":"748 Townings Dr","city":
-	 * "Culver","zip":97451,"phone":"841-874-6544","email":"jaboyd@email.com"},{
-	 * "firstName":"Jacob","lastName":"Boyd","address":"1509 Culver St","city":
-	 * "Culver","zip":97451,"phone":"841-874-6513","email":"drk@email.com"},{
-	 * "firstName":"Jamie","lastName":"Peters","address":"908 73rd St","city":
-	 * "Culver","zip":97451,"phone":"841-874-7462","email":"jpeter@email.com"},{
-	 * "firstName":"John","lastName":"Boyd","address":"1509 Culver St","city":
-	 * "Culver","zip":97451,"phone":"841-874-6512","email":"jaboyd@email.com"},{
-	 * "firstName":"Jonanathan","lastName":"Marrack","address":"29 15th St","city":
-	 * "Culver","zip":97451,"phone":"841-874-6513","email":"drk@email.com"},{
-	 * "firstName":"Kendrik","lastName":"Stelzer","address":"947 E. Rose Dr","city":
-	 * "Culver","zip":97451,"phone":"841-874-7784","email":"bstel@email.com"},{
-	 * "firstName":"Lily","lastName":"Cooper","address":"489 Manchester St","city":
-	 * "Culver","zip":97451,"phone":"841-874-9845","email":"lily@email.com"},{
-	 * "firstName":"Peter","lastName":"Duncan","address":"644 Gershwin Cir","city":
-	 * "Culver","zip":97451,"phone":"841-874-6512","email":"jaboyd@email.com"},{
-	 * "firstName":"Reginold","lastName":"Walker","address":"908 73rd St","city":
-	 * "Culver","zip":97451,"phone":"841-874-8547","email":"reg@email.com"},{
-	 * "firstName":"Roger","lastName":"Boyd","address":"1509 Culver St","city":
-	 * "Culver","zip":97451,"phone":"841-874-6512","email":"jaboyd@email.com"},{
-	 * "firstName":"Ron","lastName":"Peters","address":"112 Steppes Pl","city":
-	 * "Culver","zip":97451,"phone":"841-874-8888","email":"jpeter@email.com"},{
-	 * "firstName":"Shawna","lastName":"Stelzer","address":"947 E. Rose Dr","city":
-	 * "Culver","zip":97451,"phone":"841-874-7784","email":"ssanw@email.com"},{
-	 * "firstName":"Sophia","lastName":"Zemicks","address":"892 Downing Ct","city":
-	 * "Culver","zip":97451,"phone":"841-874-7878","email":"soph@email.com"},{
-	 * "firstName":"Tenley","lastName":"Boyd","address":"1509 Culver St","city":
-	 * "Culver","zip":97451,"phone":"841-874-6512","email":"tenz@email.com"},{
-	 * "firstName":"Tessa","lastName":"Carman","address":"834 Binoc Ave","city":
-	 * "Culver","zip":97451,"phone":"841-874-6512","email":"tenz@email.com"},{
-	 * "firstName":"Tony","lastName":"Cooper","address":"112 Steppes Pl","city":
-	 * "Culver","zip":97451,"phone":"841-874-6874","email":"tcoop@ymail.com"},{
-	 * "firstName":"Warren","lastName":"Zemicks","address":"892 Downing Ct","city":
-	 * "Culver","zip":97451,"phone":"841-874-7512","email":"ward@email.com"},{
-	 * "firstName":"Zach","lastName":"Zemicks","address":"892 Downing Ct","city":
-	 * "Culver","zip":97451,"phone":"841-874-7512","email":"zarc@email.com"}];
-	 * 
-	 * assertThat }
-	 */
-	/*
-	 * 
-	 * @Test void givenHelloInaFile_WhenReadFileIsCalled_ThenItShouldReturnHello(){
-	 * 
-	 * String jsonReference
-	 * 
-	 * = "{" + "\"persons\": ["
-	 * +"{ \"firstName\":\"John\", \"lastName\":\"Boyd\", \"address\":\"1509 Culver St\", \"city\":\"Culver\", \"zip\":\"97451\", \"phone\":\"841-874-6512\", \"email\":\"jaboyd@email.com\" }"
-	 * +"  ], " + "  \"firestations\": [ " +
-	 * "  { \"address\":\"1509 Culver St\", \"station\":\"3\" } " +"     ]," +
-	 * "   \"medicalrecords\": [ " +
-	 * "{ \"firstName\":\"Eric\", \"lastName\":\"Cadigan\", \"birthdate\":\"08/06/1945\", \"medications\":[\"tradoxidine:400mg\"], \"allergies\":[] } "
-	 * +"			] " +"}" ;
-	 * 
-	 * String filepath = "/safetynetalert/src/main/resources/jsonTestFile.json";
-	 * 
-	 * AlertFileReaderService alertFileReader = new
-	 * AlertFileReaderService(filepath);
-	 * 
-	 * String result = alertFileReader.getContent();//.getPersons();
-	 * System.out.println(result); assertThat(result).isEqualTo(jsonReference); }
-	 */
+//Firestations modifier
+
 }
