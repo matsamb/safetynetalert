@@ -17,9 +17,9 @@ public class SafetynetalertFactory {
 	public ObjectMapper getObjectMapper() {
 		return new ObjectMapper();
 	}
-	
+/*	
 	public JdbcTemplate getJdbcTemplate() {
 		return new JdbcTemplate();
-	}
+	}*/
 	
 }

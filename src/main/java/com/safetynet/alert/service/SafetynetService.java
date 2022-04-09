@@ -178,7 +178,7 @@ public class SafetynetService {
 		// System.out.println(personsJsonArrayString);
 		safetynetServiceLogger.trace("json persons array as string correctly extracted from json source file string");
 
-		ObjectMapper objectMapper = new ObjectMapper();
+		ObjectMapper objectMapper = serviceFactory.getObjectMapper();// new ObjectMapper();
 
 		Persons[] personsJavaArray = null;
 		try {
@@ -202,8 +202,8 @@ public class SafetynetService {
 		System.out.println();
 
 	}
-/*
-	public void saveAllPersons(Iterable<Persons> persons) {
+
+/*	public void saveAllPersons(Iterable<Persons> persons) {
 		personsServiceRepository.saveAll(persons);
 	}
 
@@ -241,7 +241,7 @@ public class SafetynetService {
 		safetynetServiceLogger
 				.trace("json medicalrecords array as string correctly extracted from json source file string");
 
-		ObjectMapper objectMapper = new ObjectMapper();
+		ObjectMapper objectMapper = serviceFactory.getObjectMapper();//new ObjectMapper();
 
 		MedicalRecords[] medicalrecordsJavaArray = null;
 		try {
@@ -264,8 +264,8 @@ public class SafetynetService {
 		safetynetServiceLogger.info("json file medicalrecords content loaded into database");
 
 	}
-/*
-	public void saveAllMedicalRecords(Iterable<MedicalRecords> medicalRecords) {
+
+/*	public void saveAllMedicalRecords(Iterable<MedicalRecords> medicalRecords) {
 		medicalRecordsServiceRepository.saveAll(medicalRecords);
 	}
 
@@ -298,7 +298,7 @@ public class SafetynetService {
 		safetynetServiceLogger
 				.trace("json firestations array as string correctly extracted from json source file string");
 
-		ObjectMapper objectMapper = new ObjectMapper();
+		ObjectMapper objectMapper = serviceFactory.getObjectMapper();// new ObjectMapper();
 
 		Firestations[] firestationsJavaArray = null;
 		try {
@@ -321,8 +321,8 @@ public class SafetynetService {
 		safetynetServiceLogger.info("json file firestations content loaded into database");
 
 	}
-/*
-	public void saveAllFirestations(Iterable<Firestations> firestations) {
+
+/*	public void saveAllFirestations(Iterable<Firestations> firestations) {
 		firestationsServiceRepository.saveAll(firestations);
 	}
 

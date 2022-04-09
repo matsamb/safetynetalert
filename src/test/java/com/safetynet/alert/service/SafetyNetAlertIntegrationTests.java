@@ -126,7 +126,6 @@ public class SafetyNetAlertIntegrationTests {
 //Persons modifier
 	
 	@Test
-	// @DirtiesContext(methodMode = MethodMode.BEFORE_METHOD)
 	public void givenAPersonWhenPostedThenItShouldSucceed() throws Exception {
 
 		final String postURL = "http://localhost:" + port + "/person/new";
@@ -152,7 +151,6 @@ public class SafetyNetAlertIntegrationTests {
 	}
 
 	@Test
-	// @DirtiesContext(methodMode = MethodMode.BEFORE_METHOD)
 	public void givenAMedicalRecordsWhenPostedThenItShouldSucceed() throws Exception {
 
 		final String postURL = "http://localhost:" + port + "/medicalRecord";
@@ -185,7 +183,6 @@ public class SafetyNetAlertIntegrationTests {
 	
 	
 	@Test
-	// @DirtiesContext(methodMode = MethodMode.BEFORE_METHOD)
 	public void givenAFirestationWhenPostedThenItShouldSucceed() throws Exception {
 
 		final String postURL = "http://localhost:" + port + "/firestation/new";
@@ -207,9 +204,6 @@ public class SafetyNetAlertIntegrationTests {
 		assertThat(201).isEqualTo(postUnderTest.getStatusCodeValue());
 		
 	}
-
-	
-
 	
 	@Test
 	public void givenAPersonWhenUpdatedThenItShouldSucceed() throws Exception {
@@ -246,6 +240,90 @@ public class SafetyNetAlertIntegrationTests {
 		assertThat(actualPerson.getBody()).isEqualTo(updatedPerson);		
 
 	}
+	
+	@Test
+	public void givenAFirestationWhenUpdatedThenItShouldSucceed() throws Exception {
+
+		final String postURL = "http://localhost:" + port + "/firestation/new";
+		URI createdUri = new URI(postURL);
+
+		Firestations createdStation = new Firestations("11 Max St", 5);
+		
+		HttpHeaders postHeaders = new HttpHeaders();
+		postHeaders.set("X-COM-PERSIST", "true");
+		postHeaders.set("X-COM-LOCATION", "true");
+
+		HttpEntity<Firestations> postMedicalRequest = new HttpEntity<>(createdStation, postHeaders);
+
+		ResponseEntity<String> postEntity = this.alertRestTemplate.postForEntity(createdUri, postMedicalRequest,
+				String.class);
+		
+		Firestations updatedFirestation = new Firestations("11 Max St", 6);
+		HttpHeaders putHeaders = new HttpHeaders(); 
+		postHeaders.set("X-COM-PERSIST", "true");
+		postHeaders.set("X-COM-LOCATION", "true");
+		HttpEntity<Firestations> putRequest = new HttpEntity<>(updatedFirestation, putHeaders);
+		
+		// this.alertRestTemplate.getForEntity("http://localhost:"+port+"/person/new/"+newPerson.getFirstName()+"/"+newPerson.getLastName(), putRequest, String.class);
+		
+		ResponseEntity<Firestations> actualFirestation = this.alertRestTemplate.exchange("http://localhost:"+ port +"/firestation/update/5"/*+ createdStation.getStation()*/, HttpMethod.PUT, putRequest, Firestations.class);
+
+		this.alertRestTemplate.delete("http://localhost:"+port+"/firestation/delete/"+createdStation.getAddress());
+
+		
+		assertThat(201).isEqualTo(postEntity.getStatusCodeValue());
+		assertThat(200).isEqualTo(actualFirestation.getStatusCodeValue());	
+		assertThat(actualFirestation.getBody()).isEqualTo(updatedFirestation);		
+
+	}
+	
+	@Test
+	public void givenAMedicalRecordWhenUpdatedThenItShouldSucceed() throws Exception {
+
+		final String postURL = "http://localhost:" + port + "/medicalRecord";
+		URI createdUri = new URI(postURL);
+
+		MedicalRecords createdMedicalRecord = new MedicalRecords("Max", "Body", "03/15/1965", null, null);
+		Medications medication = new Medications("N/A"); 
+		Medications[] na = {medication};
+		createdMedicalRecord.setMedications(na);
+
+		Allergies allergy = new Allergies("N/A");
+		Allergies[] al = {allergy};
+		createdMedicalRecord.setAllergies(al);
+		
+		HttpHeaders postHeaders = new HttpHeaders();
+		postHeaders.set("X-COM-PERSIST", "true");
+		postHeaders.set("X-COM-LOCATION", "true");
+
+		HttpEntity<MedicalRecords> postMedicalRequest = new HttpEntity<>(createdMedicalRecord, postHeaders);
+
+		ResponseEntity<String> postRecord = this.alertRestTemplate.postForEntity(createdUri, postMedicalRequest,
+				String.class);
+		
+		MedicalRecords updatedRecords = new MedicalRecords("Max", "Body", "908 73rd St", na, al);
+		HttpHeaders putHeaders = new HttpHeaders(); 
+		postHeaders.set("X-COM-PERSIST", "true");
+		postHeaders.set("X-COM-LOCATION", "true");
+		HttpEntity<MedicalRecords> putRequest = new HttpEntity<>(updatedRecords, putHeaders);
+		
+		// this.alertRestTemplate.getForEntity("http://localhost:"+port+"/person/new/"+newPerson.getFirstName()+"/"+newPerson.getLastName(), putRequest, String.class);
+		
+		ResponseEntity<MedicalRecords> actualRecord = this.alertRestTemplate.exchange("http://localhost:"+port+"/medicalRecord/"+createdMedicalRecord.getFirstName()+"/"+createdMedicalRecord.getLastName(), HttpMethod.PUT, putRequest, MedicalRecords.class) ; //.put (, Persons.class, newPerson);
+
+		this.alertRestTemplate.delete("http://localhost:"+port+"/medicalRecord/"+createdMedicalRecord.getFirstName()+"/"+createdMedicalRecord.getLastName());
+
+		
+		assertThat(201).isEqualTo(postRecord.getStatusCodeValue());
+		assertThat(200).isEqualTo(actualRecord.getStatusCodeValue());	
+		//assertThat(actualRecord.getBody()).isEqualTo(updatedRecords);		
+
+	}
+	
+	
+	
+	
+	
 	
 	@Test
 	public void givenAPersonWhenDeletedThenItShouldNotBeFound() throws Exception {
