@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.URI;
 
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -349,6 +350,12 @@ public class SafetyNetAlertIntegrationTests {
 		assertThat(404).isEqualTo(missingPerson.getStatusCodeValue());
 	}
 
-//Firestations modifier
+	/*@Test
+	public void personsEntityTests() {
+	 
+	    final Class<Persons> personsUnderTest = Pojo.class;
+
+	    assertPojoMethodsFor(personsUnderTest).areWellImplemented();
+	}*/
 
 }
