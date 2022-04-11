@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.URI;
 
-
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +15,8 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.MethodMode;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.safetynet.alert.controller.SafetynetalertController;
 import com.safetynet.alert.entity.Allergies;
 import com.safetynet.alert.entity.Firestations;
@@ -151,20 +142,23 @@ public class SafetyNetAlertIntegrationTests {
 		
 	}
 
+	
+	
+	
 	@Test
 	public void givenAMedicalRecordsWhenPostedThenItShouldSucceed() throws Exception {
 
 		final String postURL = "http://localhost:" + port + "/medicalRecord";
 		URI createdUri = new URI(postURL);
 
-		MedicalRecords createdMedicalRecord = new MedicalRecords("Max", "Body", "03/15/1965", null, null);
 		Medications medication = new Medications("N/A"); 
 		Medications[] na = {medication};
-		createdMedicalRecord.setMedications(na);
 
 		Allergies allergy = new Allergies("N/A");
 		Allergies[] al = {allergy};
-		createdMedicalRecord.setAllergies(al);
+
+		MedicalRecords createdMedicalRecord = new MedicalRecords("Max", "Body", "03/15/1965", na, al);
+		
 		
 		HttpHeaders postHeaders = new HttpHeaders();
 		postHeaders.set("X-COM-PERSIST", "true");
@@ -284,14 +278,13 @@ public class SafetyNetAlertIntegrationTests {
 		final String postURL = "http://localhost:" + port + "/medicalRecord";
 		URI createdUri = new URI(postURL);
 
-		MedicalRecords createdMedicalRecord = new MedicalRecords("Max", "Body", "03/15/1965", null, null);
 		Medications medication = new Medications("N/A"); 
 		Medications[] na = {medication};
-		createdMedicalRecord.setMedications(na);
 
 		Allergies allergy = new Allergies("N/A");
 		Allergies[] al = {allergy};
-		createdMedicalRecord.setAllergies(al);
+		
+		MedicalRecords createdMedicalRecord = new MedicalRecords("Max", "Body", "03/15/1965", na, al);
 		
 		HttpHeaders postHeaders = new HttpHeaders();
 		postHeaders.set("X-COM-PERSIST", "true");

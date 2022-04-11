@@ -23,11 +23,12 @@ import lombok.NoArgsConstructor;
 
 @IdClass(com.safetynet.alert.entity.PersonsKey.class)
 @Entity
-@Embeddable
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Persons implements Serializable {
+public class Persons implements Serializable{
+	
+	
 	/**
 	 * 
 	 */

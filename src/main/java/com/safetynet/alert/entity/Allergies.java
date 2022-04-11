@@ -1,10 +1,18 @@
 package com.safetynet.alert.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Embeddable;
 
-@Embeddable
-public class Allergies{
+import net.bytebuddy.implementation.bind.annotation.Super;
 
+@Embeddable
+public class Allergies implements Serializable, Cloneable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	String allergy;
 
 	public Allergies() {}
@@ -21,6 +29,15 @@ public class Allergies{
 		this.allergy = allergy;
 	}
 	
-	
+	@Override
+	public Object clone() {
+		Object allergiesClone = null;
+		try {
+			allergiesClone = super.clone();
+		}catch (CloneNotSupportedException e){
+			e.printStackTrace();
+		}		
+		return allergiesClone;
+	}
 	
 }

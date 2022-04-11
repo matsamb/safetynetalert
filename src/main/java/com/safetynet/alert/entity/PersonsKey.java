@@ -26,7 +26,7 @@ public final class PersonsKey implements Serializable{
 	public PersonsKey(String firstName, String lastName) {
 		super();
 		this.firstName = firstName;
-		this.firstName = lastName;
+		this.lastName = lastName;
 	}
 	
 	
@@ -41,7 +41,7 @@ public final class PersonsKey implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		PersonsKey other = (PersonsKey) obj;
-		return Objects.equals(firstName, other.firstName) && Objects.equals(firstName, other.firstName);
+		return Objects.equals(firstName, other.firstName) && Objects.equals(lastName, other.lastName);
 	}
 	@Override
 	public int hashCode() {
@@ -50,7 +50,7 @@ public final class PersonsKey implements Serializable{
 
 	@Override
 	public String toString() {
-		return "PersonsKey [firstName=" + firstName + ", lastName=" + lastName + "]";
+		return "Persons Key [firstName=" + firstName + ", lastName=" + lastName + "]";
 	}
 	
 	

@@ -29,10 +29,9 @@ import lombok.NoArgsConstructor;
 @IdClass(com.safetynet.alert.entity.PersonsKey.class)
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Embeddable
-public class  MedicalRecords implements Serializable {
+//@NoArgsConstructor
+//@AllArgsConstructor
+public class  MedicalRecords implements Serializable, Cloneable {
 
 	/**
 	 * 
@@ -78,22 +77,22 @@ public class  MedicalRecords implements Serializable {
 	public void setgGobalEntity(GlobalEntity globalEntity) {
 		this.globalEntity = globalEntity;
 	}*/
-	/*
+
 	public MedicalRecords() {}
 	
 	public MedicalRecords(String firstName, String lastName, String birthDate, Medications[] medications, Allergies[] allergies) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.birthDate = birthDate;
-		this.medications = medications;
-		this.allergies = allergies;
+		this.medications = (Medications[])medications.clone();
+		this.allergies = (Allergies[]) allergies.clone();
 	}
 
 	public String getFirstName() {
-		return firstName;
+		return this.firstName ;
 	}
 
-	public void ListFirstName(String firstName) {
+	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
@@ -101,7 +100,7 @@ public class  MedicalRecords implements Serializable {
 		return lastName;
 	}
 
-	public void ListLastName(String lastName) {
+	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
@@ -109,24 +108,24 @@ public class  MedicalRecords implements Serializable {
 		return birthDate;
 	}
 
-	public void ListBirthDate(String birthDate) {
+	public void setBirthDate(String birthDate) {
 		this.birthDate = birthDate;
 	}
 
 	public Medications[] getMedications() {
-		return medications;
+		return (Medications[]) this.medications.clone();
 	}
 
-	public void ListMedications(Medications[] medications) {
-		this.medications = medications;
+	public void setMedications(Medications[] medications) {
+		this.medications = (Medications[])medications.clone();
 	}
 
 	public Allergies[] getAllergies() {
-		return allergies;
+		return (Allergies[]) this.allergies.clone();
 	}
 
-	public void ListAllergies(Allergies[] allergies) {
-		this.allergies = allergies;
+	public void setAllergies(Allergies[] allergies) {
+		this.allergies = (Allergies[]) allergies.clone();
 	}
 
 	@Override
@@ -143,11 +142,22 @@ public class  MedicalRecords implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		MedicalRecords other = (MedicalRecords) obj;
-		return Objects.equals(allergies, other.allergies) && Objects.equals(birthDate, other.birthDate)
+		return allergies == other.allergies && Objects.equals(birthDate, other.birthDate)
 				&& Objects.equals(firstName, other.firstName) && Objects.equals(lastName, other.lastName)
-				&& Objects.equals(medications, other.medications);
+				&& medications == other.medications;
 	}
 	
-	
-	*/
+/*	@Override
+	public Object clone() {
+		MedicalRecords recordsClone = new MedicalRecords(this.firstName, this.lastName, this.birthDate, this.medications, this.allergies);
+		try {
+			recordsClone = (MedicalRecords) super.clone();
+		}catch( CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		recordsClone.medications = (Medications[]) medications.clone();
+		recordsClone.allergies = (Allergies[]) allergies.clone();
+		
+		return recordsClone;
+	}*/
 }

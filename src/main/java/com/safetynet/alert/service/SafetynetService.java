@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -139,7 +140,7 @@ public class SafetynetService {
 		Resource resource = serviceFactory.loadSafetynetAlertDataWithClassPathResource();
 		List<String> jsonAsListOfStrings = null;
 
-		try (BufferedReader finalReader = new BufferedReader(new InputStreamReader(resource.getInputStream()))) {
+		try (BufferedReader finalReader = new BufferedReader(new InputStreamReader(resource.getInputStream(),"UTF-8"))) {
 			jsonAsListOfStrings = finalReader.lines().collect(Collectors.toList());// .forEach(System.out::println);
 			safetynetServiceLogger.info("file reader service get file content correctly");
 		} catch (IOException e) {
@@ -196,10 +197,14 @@ public class SafetynetService {
 					.error("JsonProcessingException, json persons array as string can't be processed to java array");
 
 		}
+		
+		if (Objects.nonNull(personsJavaArray)) {
 		List<Persons> personsJavaList = Arrays.asList(personsJavaArray);
 		personsServiceRepository.saveAll(personsJavaList);
 		safetynetServiceLogger.info("json file persons content loaded into database");
-		System.out.println();
+		} else {
+		safetynetServiceLogger.debug("json file persons content is null");
+		}
 
 	}
 
@@ -259,9 +264,14 @@ public class SafetynetService {
 					"JsonProcessingException, json medicalrecords array as string can't be processed to java array");
 
 		}
-		List<MedicalRecords> personsJavaList = Arrays.asList(medicalrecordsJavaArray);
-		medicalRecordsServiceRepository.saveAll(personsJavaList);
+		
+		if (Objects.nonNull(medicalrecordsJavaArray)) {
+		List<MedicalRecords> medicalrecordsJavaList = Arrays.asList(medicalrecordsJavaArray);
+		medicalRecordsServiceRepository.saveAll(medicalrecordsJavaList);
 		safetynetServiceLogger.info("json file medicalrecords content loaded into database");
+		} else {
+			safetynetServiceLogger.debug("json file medicalrecords content is null");
+		}
 
 	}
 
@@ -316,10 +326,14 @@ public class SafetynetService {
 					"JsonProcessingException, json firestations array as string can't be processed to java array");
 
 		}
+		
+		if (Objects.nonNull(firestationsJavaArray)) {
 		List<Firestations> firestationsJavaList = Arrays.asList(firestationsJavaArray);
 		firestationsServiceRepository.saveAll(firestationsJavaList);
 		safetynetServiceLogger.info("json file firestations content loaded into database");
-
+		}else {
+			safetynetServiceLogger.debug("json file firestations content is null");
+		}
 	}
 
 /*	public void saveAllFirestations(Iterable<Firestations> firestations) {
