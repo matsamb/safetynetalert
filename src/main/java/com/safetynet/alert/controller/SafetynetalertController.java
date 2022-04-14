@@ -4,6 +4,9 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,8 +38,10 @@ import com.safetynet.alert.service.SafetynetService;
 @Transactional
 public class SafetynetalertController {
 
+	private static Logger controllerLogger = LogManager.getLogger("SafetynetController");
+	
 	@Autowired
-	private SafetynetService safetynetServiceController;
+	SafetynetService safetynetServiceController;
 
 	public SafetynetalertController(SafetynetService safetynetServiceController){
 		this.safetynetServiceController = safetynetServiceController;
@@ -48,47 +53,59 @@ public class SafetynetalertController {
 	}
 	
 //URL	
-	// manque decompte adult et enfant
 	@GetMapping("firestation/{stationNumber}")
 	public Iterable<StationNumber> getStationNumber(@PathVariable int stationNumber) {
+		controllerLogger.info("URI firestation/"+stationNumber+", displayed");
 		return safetynetServiceController.getCustomStationNumber(stationNumber);
 	}
 	
-	@GetMapping("/phoneAlert/{station}")
+	@GetMapping("phoneAlert/{station}")
 	public Iterable<PhoneAlert> getPhoneAlert(@PathVariable int station) {
+		controllerLogger.info("URI phoneAlert/"+station+", displayed");
 		return safetynetServiceController.getCustomPhoneAlert(station);
 	}
 	
-	@GetMapping("/childAlert/{address}")
+	@GetMapping("childAlert/{address}")
 	public Iterable<ChildAlert> getChildAlert(@PathVariable String address) {
+		controllerLogger.info("URI childAlert/"+address+", displayed");
 		return safetynetServiceController.getCustomChildAlert(address);
 	}
 	
-	@GetMapping("/communityEmail/{city}") // email de tous les habitants
+	@GetMapping("communityEmail/{city}") // email de tous les habitants
 	public Iterable<CommunityEmail> getCommunityEmail(@PathVariable String city) {
+		controllerLogger.info("URI communityEmail/"+city+", displayed");
 		return safetynetServiceController.getCustomCommunityEmail(city);
 	}
 	
-	@GetMapping("/fire/{address}")
+	@GetMapping("fire/{address}")
 	public Iterable<FirePlaces> getFirePlaces(@PathVariable String address){
+		controllerLogger.info("URI fire/"+address+", displayed");
 		return safetynetServiceController.getFirePlaces(address);
 	}
 	
-	@GetMapping("/personsInfo/{firstName}&{lastName}")
+	@GetMapping("personsInfo/{firstName}&{lastName}")
 	public Iterable<PersonsInfo> getPersonsInfo(@PathVariable(value = "firstName") String firstName,
 			@PathVariable(value = "lastName") String lastName) {
+		controllerLogger.info("URI personsInfo/"+firstName+"&"+lastName+", displayed");
 		return safetynetServiceController.getPersonsInfo(firstName, lastName);
 	}
 	
-	@GetMapping("/flood/{stations}")
-	public Iterable<FloodStations> getFloodStations(@PathVariable String... stations){
-		List<String> stationsTable = Arrays.asList(stations);//.stream().collect(Collectors.toList());
+	@GetMapping("flood/{stations}")
+	public Iterable<FloodStations> getFloodStations(@PathVariable String stations){
+		String[] station = stations.split(",");
+		List<String> stationsTable = Arrays.asList(station);//.stream().collect(Collectors.toList());
+		controllerLogger.info("URI flood/"+stations+", displayed");
 		return safetynetServiceController.getFloodStations(stationsTable);
 	}
 		  
 //persons modifier access
 
-	@PostMapping("/person/new")
+	@GetMapping("person/{firstName}/{lastName}")
+	public Persons findPerson(@PathVariable String firstName, @PathVariable String lastName) {
+		return safetynetServiceController.findPersonsByFirstNameAndLastName(firstName, lastName);
+	}
+		
+	@PostMapping("person")
 	public ResponseEntity<Persons> addPersons(@RequestBody Persons persons) {
 		Persons addedPerson = safetynetServiceController.savePersons(persons);
 		
@@ -102,7 +119,7 @@ public class SafetynetalertController {
 	}
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
-	@PutMapping("person/update/{firstName}/{lastName}")
+	@PutMapping("person/{firstName}/{lastName}")
 	public ResponseEntity<Persons> upDatePersons(@PathVariable String firstName, @PathVariable String lastName,
 			@RequestBody Persons newPersonDetails) {
 
@@ -125,14 +142,14 @@ public class SafetynetalertController {
 		}
 	}
 
-	@DeleteMapping("person/delete/{firstName}/{lastName}")
+	@DeleteMapping("person/{firstName}/{lastName}")
 	public void deleteOnePerson(@PathVariable String firstName, @PathVariable String lastName) {
 		safetynetServiceController.deletePersonsByFirstNameAndLastName(firstName, lastName);
 	}
 
 //firestations modifier access
 
-	@PostMapping("firestation/new")
+	@PostMapping("firestation")
 	public ResponseEntity<Firestations> addFirestations(@RequestBody Firestations firestation) {
 		Firestations addedFirestation = safetynetServiceController.saveFirestations(firestation);
 		
@@ -148,7 +165,7 @@ public class SafetynetalertController {
 	}
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
-	@PutMapping("firestation/update/{stationNumber}")
+	@PutMapping("firestation/{stationNumber}")
 	public ResponseEntity<Firestations> updateFirestation(@PathVariable int stationNumber, @RequestBody Firestations newFirestationDetails) {
 
 		
@@ -167,7 +184,7 @@ public class SafetynetalertController {
 		}
 	}
 
-	@DeleteMapping("firestation/delete/{address}")
+	@DeleteMapping("firestation/{address}")
 	public void deleteFirestation(@PathVariable String address) {
 		safetynetServiceController.deleteFirestationsByAddress(address);
 	}

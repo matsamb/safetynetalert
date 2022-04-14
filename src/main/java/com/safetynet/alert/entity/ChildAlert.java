@@ -22,4 +22,6 @@ public class ChildAlert {
 	int age;
 	
 	String address;
+	
+	int id;
 }

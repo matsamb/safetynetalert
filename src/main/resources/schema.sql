@@ -1,6 +1,6 @@
 /*drop database prodalert;
 create database prodalert;*/
-use prodalert;
+/*use prodalert;*/
 
 /*DROP TABLE IF EXISTS  young;
 create table young (

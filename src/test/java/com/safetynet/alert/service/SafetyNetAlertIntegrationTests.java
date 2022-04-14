@@ -31,9 +31,6 @@ public class SafetyNetAlertIntegrationTests {
 
 	@LocalServerPort
 	private int port;
-	
-	//@Autowired
-	//private MockMvc mockMvc;
 
 	@Autowired
 	private TestRestTemplate alertRestTemplate;
@@ -73,8 +70,7 @@ public class SafetyNetAlertIntegrationTests {
 	@Test
 	public void givenChildAlert1509CulverStUrlWhenServerUpThenItShouldReturnChildAlert1509CulverStDetails()
 			throws Exception {
-		String childAlert1509CulverStDetails = "[{\"firstName\":\"Felicia\",\"lastName\":\"Boyd\",\"birthDate\":\"01/08/1986\",\"age\":36,\"address\":\"1509 Culver St\"},{\"firstName\":\"Jacob\",\"lastName\":\"Boyd\",\"birthDate\":\"03/06/1989\",\"age\":33,\"address\":\"1509 Culver St\"},{\"firstName\":\"John\",\"lastName\":\"Boyd\",\"birthDate\":\"03/06/1984\",\"age\":38,\"address\":\"1509 Culver St\"},{\"firstName\":\"Roger\",\"lastName\":\"Boyd\",\"birthDate\":\"09/06/2017\",\"age\":4,\"address\":\"1509 Culver St\"},{\"firstName\":\"Tenley\",\"lastName\":\"Boyd\",\"birthDate\":\"02/18/2012\",\"age\":10,\"address\":\"1509 Culver St\"}]";
-
+		String childAlert1509CulverStDetails = "[{\"firstName\":\"Roger\",\"lastName\":\"Boyd\",\"birthDate\":\"09/06/2017\",\"age\":4,\"address\":\"1509 Culver St\",\"id\":1},{\"firstName\":\"Tenley\",\"lastName\":\"Boyd\",\"birthDate\":\"02/18/2012\",\"age\":10,\"address\":\"1509 Culver St\",\"id\":2},{\"firstName\":\"Jacob\",\"lastName\":\"Boyd\",\"birthDate\":\"03/06/1989\",\"age\":33,\"address\":\"1509 Culver St\",\"id\":1},{\"firstName\":\"Felicia\",\"lastName\":\"Boyd\",\"birthDate\":\"01/08/1986\",\"age\":36,\"address\":\"1509 Culver St\",\"id\":2},{\"firstName\":\"John\",\"lastName\":\"Boyd\",\"birthDate\":\"03/06/1984\",\"age\":38,\"address\":\"1509 Culver St\",\"id\":3}]";
 		assertThat(this.alertRestTemplate.getForObject("http://localhost:" + port + "/childAlert/1509 Culver St",
 				String.class)).contains(childAlert1509CulverStDetails);
 	}
@@ -120,7 +116,7 @@ public class SafetyNetAlertIntegrationTests {
 	@Test
 	public void givenAPersonWhenPostedThenItShouldSucceed() throws Exception {
 
-		final String postURL = "http://localhost:" + port + "/person/new";
+		final String postURL = "http://localhost:" + port + "/person";
 		URI createdUri = new URI(postURL);
 
 		Persons newPerson = new Persons("Max", "Body", "112 Steppes Pl", "Culver", 97451, "841-875-9218",
@@ -135,11 +131,10 @@ public class SafetyNetAlertIntegrationTests {
 		ResponseEntity<String> postUnderTest = this.alertRestTemplate.postForEntity(createdUri, postRequest,
 				String.class);
 
-		this.alertRestTemplate.delete("http://localhost:" + port + "/person/delete/" + newPerson.getFirstName() + "/"
+		this.alertRestTemplate.delete("http://localhost:" + port + "/person/" + newPerson.getFirstName() + "/"
 				+ newPerson.getLastName());
 		
 		assertThat(201).isEqualTo(postUnderTest.getStatusCodeValue());
-		
 	}
 
 	
@@ -169,7 +164,7 @@ public class SafetyNetAlertIntegrationTests {
 		ResponseEntity<String> postUnderTest = this.alertRestTemplate.postForEntity(createdUri, postMedicalRequest,
 				String.class);
 
-		this.alertRestTemplate.delete("http://localhost:" + port + "/medicalRecord/delete/" + createdMedicalRecord.getFirstName() + "/"
+		this.alertRestTemplate.delete("http://localhost:" + port + "/medicalRecord/" + createdMedicalRecord.getFirstName() + "/"
 				+ createdMedicalRecord.getLastName());
 		
 		assertThat(201).isEqualTo(postUnderTest.getStatusCodeValue());
@@ -180,30 +175,29 @@ public class SafetyNetAlertIntegrationTests {
 	@Test
 	public void givenAFirestationWhenPostedThenItShouldSucceed() throws Exception {
 
-		final String postURL = "http://localhost:" + port + "/firestation/new";
+		final String postURL = "http://localhost:" + port + "/firestation";
 		URI createdUri = new URI(postURL);
 
-		Firestations createdStationRecord = new Firestations("11 Max St", 5);
+		Firestations createdStation = new Firestations("11 Max St", 5);
 		
 		HttpHeaders postHeaders = new HttpHeaders();
 		postHeaders.set("X-COM-PERSIST", "true");
 		postHeaders.set("X-COM-LOCATION", "true");
 
-		HttpEntity<Firestations> postMedicalRequest = new HttpEntity<>(createdStationRecord, postHeaders);
+		HttpEntity<Firestations> postStationRequest = new HttpEntity<>(createdStation, postHeaders);
 
-		ResponseEntity<String> postUnderTest = this.alertRestTemplate.postForEntity(createdUri, postMedicalRequest,
+		ResponseEntity<String> postUnderTest = this.alertRestTemplate.postForEntity(createdUri, postStationRequest,
 				String.class);
 
-		this.alertRestTemplate.delete("http://localhost:" + port + "/firestation/delete/" + createdStationRecord.getAddress());
+		this.alertRestTemplate.delete("http://localhost:" + port + "/firestation/" + createdStation.getAddress());
 		
-		assertThat(201).isEqualTo(postUnderTest.getStatusCodeValue());
-		
+		assertThat(201).isEqualTo(postUnderTest.getStatusCodeValue());		
 	}
 	
 	@Test
 	public void givenAPersonWhenUpdatedThenItShouldSucceed() throws Exception {
 
-		final String postURL = "http://localhost:" + port + "/person/new";
+		final String postURL = "http://localhost:" + port + "/person";
 		URI createdUri = new URI(postURL);
 
 		Persons newPerson = new Persons("Max", "Body", "112 Steppes Pl", "Culver", 97451, "841-875-9218",
@@ -225,9 +219,9 @@ public class SafetyNetAlertIntegrationTests {
 		
 		// this.alertRestTemplate.getForEntity("http://localhost:"+port+"/person/new/"+newPerson.getFirstName()+"/"+newPerson.getLastName(), putRequest, String.class);
 		
-		ResponseEntity<Persons> actualPerson = this.alertRestTemplate.exchange("http://localhost:"+port+"/person/update/"+newPerson.getFirstName()+"/"+newPerson.getLastName(), HttpMethod.PUT, putRequest, Persons.class) ; //.put (, Persons.class, newPerson);
+		ResponseEntity<Persons> actualPerson = this.alertRestTemplate.exchange("http://localhost:"+port+"/person/"+newPerson.getFirstName()+"/"+newPerson.getLastName(), HttpMethod.PUT, putRequest, Persons.class) ; //.put (, Persons.class, newPerson);
 
-		this.alertRestTemplate.delete("http://localhost:"+port+"/person/delete/"+newPerson.getFirstName()+"/"+newPerson.getLastName());
+		this.alertRestTemplate.delete("http://localhost:"+port+"/person/"+newPerson.getFirstName()+"/"+newPerson.getLastName());
 
 		
 		assertThat(201).isEqualTo(postEntity.getStatusCodeValue());
@@ -239,7 +233,7 @@ public class SafetyNetAlertIntegrationTests {
 	@Test
 	public void givenAFirestationWhenUpdatedThenItShouldSucceed() throws Exception {
 
-		final String postURL = "http://localhost:" + port + "/firestation/new";
+		final String postURL = "http://localhost:" + port + "/firestation";
 		URI createdUri = new URI(postURL);
 
 		Firestations createdStation = new Firestations("11 Max St", 5);
@@ -261,9 +255,9 @@ public class SafetyNetAlertIntegrationTests {
 		
 		// this.alertRestTemplate.getForEntity("http://localhost:"+port+"/person/new/"+newPerson.getFirstName()+"/"+newPerson.getLastName(), putRequest, String.class);
 		
-		ResponseEntity<Firestations> actualFirestation = this.alertRestTemplate.exchange("http://localhost:"+ port +"/firestation/update/5"/*+ createdStation.getStation()*/, HttpMethod.PUT, putRequest, Firestations.class);
+		ResponseEntity<Firestations> actualFirestation = this.alertRestTemplate.exchange("http://localhost:"+ port +"/firestation/5"/*+ createdStation.getStation()*/, HttpMethod.PUT, putRequest, Firestations.class);
 
-		this.alertRestTemplate.delete("http://localhost:"+port+"/firestation/delete/"+createdStation.getAddress());
+		this.alertRestTemplate.delete("http://localhost:"+port+"/firestation/"+createdStation.getAddress());
 
 		
 		assertThat(201).isEqualTo(postEntity.getStatusCodeValue());
@@ -310,19 +304,14 @@ public class SafetyNetAlertIntegrationTests {
 		
 		assertThat(201).isEqualTo(postRecord.getStatusCodeValue());
 		assertThat(200).isEqualTo(actualRecord.getStatusCodeValue());	
-		//assertThat(actualRecord.getBody()).isEqualTo(updatedRecords);		
+		assertThat(actualRecord.getBody().equals(updatedRecords));		
 
 	}
-	
-	
-	
-	
-	
 	
 	@Test
 	public void givenAPersonWhenDeletedThenItShouldNotBeFound() throws Exception {
 
-		final String postURL = "http://localhost:" + port + "/person/new";
+		final String postURL = "http://localhost:" + port + "/person";
 		URI createdUri = new URI(postURL);
 
 		Persons newPerson = new Persons("Max", "Body", "112 Steppes Pl", "Culver", 97451, "841-875-9218",
@@ -336,19 +325,12 @@ public class SafetyNetAlertIntegrationTests {
 		ResponseEntity<String> postUnderTest = this.alertRestTemplate.postForEntity(createdUri, postRequest,
 				String.class);
 		
-		this.alertRestTemplate.delete("http://localhost:"+port+"/person/delete/"+newPerson.getFirstName()+"/"+newPerson.getLastName());
-		ResponseEntity<Persons> missingPerson = this.alertRestTemplate.getForEntity("http://localhost:"+port+"/person/new/"+newPerson.getFirstName()+"/"+newPerson.getLastName(), Persons.class, newPerson);
+		this.alertRestTemplate.delete("http://localhost:"+port+"/person/Max/Body");
+		ResponseEntity<Persons> missingPerson = this.alertRestTemplate.getForEntity("http://localhost:"+port+"/person/Max/Body", Persons.class, newPerson);
 		
 		assertThat(201).isEqualTo(postUnderTest.getStatusCodeValue());
-		assertThat(404).isEqualTo(missingPerson.getStatusCodeValue());
+		assertThat(200).isEqualTo(missingPerson.getStatusCodeValue());
+		assertThat(missingPerson.getBody()).isNull();
 	}
-
-	/*@Test
-	public void personsEntityTests() {
-	 
-	    final Class<Persons> personsUnderTest = Pojo.class;
-
-	    assertPojoMethodsFor(personsUnderTest).areWellImplemented();
-	}*/
-
+	
 }
