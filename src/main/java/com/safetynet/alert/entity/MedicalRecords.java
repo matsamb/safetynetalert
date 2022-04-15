@@ -2,35 +2,21 @@ package com.safetynet.alert.entity;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
-import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
-
-import org.springframework.data.relational.core.mapping.Embedded.Nullable;
-import org.springframework.lang.NonNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @IdClass(com.safetynet.alert.entity.PersonsKey.class)
 @Entity
 @Data
-//@NoArgsConstructor
-//@AllArgsConstructor
 public class  MedicalRecords implements Serializable, Cloneable {
 
 	/**
@@ -63,21 +49,6 @@ public class  MedicalRecords implements Serializable, Cloneable {
 	@OrderColumn
 	Allergies[] allergies;
 	
-	/*@Column(name="global_entity", insertable = false, updatable = false)
-	GlobalEntity globalEntity;
-	
-	@OneToOne
-	@JoinColumns({
-		@JoinColumn (name="global_entity", referencedColumnName ="global_entity_Id")
-	})
-	public GlobalEntity getGlobalEntity() {
-		return globalEntity;
-	}
-
-	public void setgGobalEntity(GlobalEntity globalEntity) {
-		this.globalEntity = globalEntity;
-	}*/
-
 	public MedicalRecords() {}
 	
 	public MedicalRecords(String firstName, String lastName, String birthDate, Medications[] medications, Allergies[] allergies) {
@@ -146,18 +117,5 @@ public class  MedicalRecords implements Serializable, Cloneable {
 				&& Objects.equals(firstName, other.firstName) && Objects.equals(lastName, other.lastName)
 				&& medications == other.medications;
 	}
-	
-/*	@Override
-	public Object clone() {
-		MedicalRecords recordsClone = new MedicalRecords(this.firstName, this.lastName, this.birthDate, this.medications, this.allergies);
-		try {
-			recordsClone = (MedicalRecords) super.clone();
-		}catch( CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
-		recordsClone.medications = (Medications[]) medications.clone();
-		recordsClone.allergies = (Allergies[]) allergies.clone();
-		
-		return recordsClone;
-	}*/
+
 }

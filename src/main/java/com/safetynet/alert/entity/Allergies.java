@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 
-import net.bytebuddy.implementation.bind.annotation.Super;
-
 @Embeddable
 public class Allergies implements Serializable, Cloneable{
 

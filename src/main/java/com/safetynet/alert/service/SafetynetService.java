@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityManager;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,10 +139,6 @@ public class SafetynetService {
 		return floodStationsServiceRepository.getFloodTwoStationsUrl(stationOne, stationTwo);
 	}
 
-//URL modifiers
-	
-	
-	
 //IO	
 
 	public String jsonToString() {
@@ -152,7 +146,7 @@ public class SafetynetService {
 		List<String> jsonAsListOfStrings = null;
 
 		try (BufferedReader finalReader = new BufferedReader(new InputStreamReader(resource.getInputStream(),"UTF-8"))) {
-			jsonAsListOfStrings = finalReader.lines().collect(Collectors.toList());// .forEach(System.out::println);
+			jsonAsListOfStrings = finalReader.lines().collect(Collectors.toList());
 			safetynetServiceLogger.info("file reader service get file content correctly");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -187,10 +181,9 @@ public class SafetynetService {
 		String jsonString = this.jsonToString();
 
 		String personsJsonArrayString = jsonString.substring(jsonString.indexOf('['), jsonString.indexOf(']') + 1);
-		// System.out.println(personsJsonArrayString);
 		safetynetServiceLogger.trace("json persons array as string correctly extracted from json source file string");
 
-		ObjectMapper objectMapper = serviceFactory.getObjectMapper();// new ObjectMapper();
+		ObjectMapper objectMapper = serviceFactory.getObjectMapper();
 
 		Persons[] personsJavaArray = null;
 		try {
@@ -219,19 +212,6 @@ public class SafetynetService {
 
 	}
 
-/*	public void saveAllPersons(Iterable<Persons> persons) {
-		personsServiceRepository.saveAll(persons);
-	}
-
-	public Iterable<Persons> getAllPersons() {
-		List<Persons> per = personsServiceRepository.findAll();
-		List<Firestations> fir = firestationsServiceRepository.findAll();
-		// per.forEach(System.out::println);
-		per.get(0).getAddress();
-		System.out.println(per.get(0).getAddress() + "\n" + fir.get(0));
-		return personsServiceRepository.findAll();
-	}*/
-
 // medical records section	
 
 	public MedicalRecords saveMedicalRecords(MedicalRecords medicalRecords) {
@@ -253,11 +233,10 @@ public class SafetynetService {
 		String medicalrecordsJsonArrayString = jsonString.substring(
 				jsonString.indexOf('[', jsonString.indexOf(']', jsonString.indexOf(']') + 1) + 1),
 				jsonString.indexOf('}', jsonString.length() - 2));
-		// System.out.println(medicalrecordsJsonArrayString);
 		safetynetServiceLogger
 				.trace("json medicalrecords array as string correctly extracted from json source file string");
 
-		ObjectMapper objectMapper = serviceFactory.getObjectMapper();//new ObjectMapper();
+		ObjectMapper objectMapper = serviceFactory.getObjectMapper();
 
 		MedicalRecords[] medicalrecordsJavaArray = null;
 		try {
@@ -286,14 +265,6 @@ public class SafetynetService {
 
 	}
 
-/*	public void saveAllMedicalRecords(Iterable<MedicalRecords> medicalRecords) {
-		medicalRecordsServiceRepository.saveAll(medicalRecords);
-	}
-
-	public Iterable<MedicalRecords> getAllMedicalRecords() {
-		return medicalRecordsServiceRepository.findAll();
-	}*/
-
 //fire stations section
 
 
@@ -315,11 +286,10 @@ public class SafetynetService {
 
 		String firestationsJsonArrayString = jsonString.substring(jsonString.indexOf('[', jsonString.indexOf(']')),
 				jsonString.indexOf(']', jsonString.indexOf(']') + 1) + 1);
-		// System.out.println(firestationsJsonArrayString);
 		safetynetServiceLogger
 				.trace("json firestations array as string correctly extracted from json source file string");
 
-		ObjectMapper objectMapper = serviceFactory.getObjectMapper();// new ObjectMapper();
+		ObjectMapper objectMapper = serviceFactory.getObjectMapper();
 
 		Firestations[] firestationsJavaArray = null;
 		try {
@@ -353,12 +323,6 @@ public class SafetynetService {
 		serviceJdbcTemplate.execute("create table if not exists young (first_name varchar(50), last_name varchar(50), birth_date varchar (50), Age integer, address varchar(100), primary key (first_name, last_name));");
 		serviceJdbcTemplate.execute("insert ignore into young (first_name, last_name, birth_date, Age, address) SELECT distinct medical_records.*, DATE_FORMAT(FROM_DAYS(DATEDIFF(curdate(),STR_TO_DATE(medical_records.birth_date,'%m/%d/%Y'))), '%Y')+0 AS Age, persons.address from persons, medical_records where DATE_FORMAT(FROM_DAYS(DATEDIFF(curdate(),STR_TO_DATE(medical_records.birth_date,'%m/%d/%Y'))), '%Y')+0 < 18 and persons.first_name= medical_records.first_name;");
 	}
-/*	public void saveAllFirestations(Iterable<Firestations> firestations) {
-		firestationsServiceRepository.saveAll(firestations);
-	}
 
-	public Iterable<Firestations> getAllFirestations() {
-		return firestationsServiceRepository.findAll();
-	}*/
 
 }

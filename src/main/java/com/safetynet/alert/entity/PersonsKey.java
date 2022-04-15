@@ -3,19 +3,12 @@ package com.safetynet.alert.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.persistence.Embeddable;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.SecondaryTable;
-import javax.persistence.Table;
-
 public final class PersonsKey implements Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	// properties public or class protected
 	
 	public String firstName;
 	

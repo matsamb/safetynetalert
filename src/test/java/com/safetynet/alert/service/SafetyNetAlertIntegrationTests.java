@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.URI;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -331,6 +330,6 @@ public class SafetyNetAlertIntegrationTests {
 		assertThat(201).isEqualTo(postUnderTest.getStatusCodeValue());
 		assertThat(200).isEqualTo(missingPerson.getStatusCodeValue());
 		assertThat(missingPerson.getBody()).isNull();
-	}
+	}	
 	
 }

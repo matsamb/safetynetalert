@@ -1,8 +1,6 @@
 package com.safetynet.alert.controller;
 
 import java.net.URI;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
@@ -261,22 +259,5 @@ public class SafetynetalertController {
 		safetynetServiceController.deleteMedicalRecordsByFirstNameAndLastName(firstName, lastName);
 		controllerLogger.info(firstName+" "+lastName+"'s medical records deleted");
 	}
-
-//test read
-
-/*	@GetMapping("/persons")
-	public Iterable<Persons> getAllPersons() {
-		return safetynetServiceController.getAllPersons();
-	}
-
-	@GetMapping("/medicalrecords")
-	public Iterable<MedicalRecords> getAllMedicalRecords() {
-		return safetynetServiceController.getAllMedicalRecords();
-	}
-
-	@GetMapping("/firestations")
-	public Iterable<Firestations> getAllFirestations() {
-		return safetynetServiceController.getAllFirestations();
-	}*/
 
 }
