@@ -1,9 +1,13 @@
-/*drop database prodalert;
-create database prodalert;*/
+/*drop database prodalert;*/
+create database if not exists prodalert;
+
+/*drop database testalert;*/
+create database if not exists testalert;
+
 /*use prodalert;*/
 
 /*DROP TABLE IF EXISTS  young;
-create table young (
+create table IF NOT EXISTS young (
 	first_name varchar(50),
 	last_name varchar(50),
 	birth_date varchar (50),

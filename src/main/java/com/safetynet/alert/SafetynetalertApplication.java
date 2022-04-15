@@ -28,6 +28,7 @@ public class SafetynetalertApplication implements CommandLineRunner{
 		safetynetService.jsonToPersonsDatabase();
 		safetynetService.jsonToMedicalRecordsDatabaseTable();		
 		safetynetService.jsonToFireStationsDatabaseTable();
+		safetynetService.creatAndFillTableYoung();
 		logger.info("data loaded into database");
 	}
 	

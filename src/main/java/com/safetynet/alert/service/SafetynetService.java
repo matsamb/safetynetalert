@@ -7,10 +7,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -75,6 +79,9 @@ public class SafetynetService {
 
 	@Autowired
 	SafetynetalertFactory serviceFactory;
+	
+	@Autowired
+	JdbcTemplate serviceJdbcTemplate;
 
 	public SafetynetService(PersonsRepository safetynetalertRepository,
 			MedicalRecordsRepository medicalRecordsServiceRepository,
@@ -340,6 +347,12 @@ public class SafetynetService {
 		}
 	}
 
+	
+	public void creatAndFillTableYoung() {
+		serviceJdbcTemplate.execute("DROP TABLE IF EXISTS  young;");
+		serviceJdbcTemplate.execute("create table if not exists young (first_name varchar(50), last_name varchar(50), birth_date varchar (50), Age integer, address varchar(100), primary key (first_name, last_name));");
+		serviceJdbcTemplate.execute("insert ignore into young (first_name, last_name, birth_date, Age, address) SELECT distinct medical_records.*, DATE_FORMAT(FROM_DAYS(DATEDIFF(curdate(),STR_TO_DATE(medical_records.birth_date,'%m/%d/%Y'))), '%Y')+0 AS Age, persons.address from persons, medical_records where DATE_FORMAT(FROM_DAYS(DATEDIFF(curdate(),STR_TO_DATE(medical_records.birth_date,'%m/%d/%Y'))), '%Y')+0 < 18 and persons.first_name= medical_records.first_name;");
+	}
 /*	public void saveAllFirestations(Iterable<Firestations> firestations) {
 		firestationsServiceRepository.saveAll(firestations);
 	}
