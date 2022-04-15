@@ -91,29 +91,38 @@ public class SafetynetalertController {
 	}
 	
 	@GetMapping("flood/{stations}")
-	public Iterable<FloodStations> getFloodStations(@PathVariable String stations){
-		String[] station = stations.split(",");
-		List<String> stationsTable = Arrays.asList(station);//.stream().collect(Collectors.toList());
+	public Iterable<FloodStations> getFloodOneStations(@PathVariable int stations){
 		controllerLogger.info("URI flood/"+stations+", displayed");
-		return safetynetServiceController.getFloodStations(stationsTable);
+		return safetynetServiceController.getFloodOneStations(stations);
+	}
+	
+	@GetMapping("flood/{stationOne}/{stationTwo}")
+	public Iterable<FloodStations> getFloodTwoStations(@PathVariable(value = "stationOne") int stationOne, @PathVariable(value = "stationTwo") int stationTwo){
+		controllerLogger.info("URI flood/"+stationOne+"/"+stationTwo+", displayed");
+		return safetynetServiceController.getFloodTwoStations(stationOne, stationTwo);
 	}
 		  
 //persons modifier access
 
 	@GetMapping("person/{firstName}/{lastName}")
 	public Persons findPerson(@PathVariable String firstName, @PathVariable String lastName) {
+		
 		return safetynetServiceController.findPersonsByFirstNameAndLastName(firstName, lastName);
 	}
 		
 	@PostMapping("person")
 	public ResponseEntity<Persons> addPersons(@RequestBody Persons persons) {
 		Persons addedPerson = safetynetServiceController.savePersons(persons);
+		controllerLogger.debug("Posted person recovered");
 		
 		if (Objects.isNull(addedPerson)) {
+			controllerLogger.error("the posted person request body is empty");
 			return ResponseEntity.noContent().build();
 		}
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{firstName}/{lastName}")
 				.buildAndExpand(addedPerson.getFirstName(), addedPerson.getLastName()).toUri();
+		controllerLogger.debug("Posted person "+ addedPerson.getFirstName()+" "+addedPerson.getLastName()+" URI created");
+		controllerLogger.info("The posted person "+ addedPerson.getFirstName()+" "+addedPerson.getLastName()+" created");
 		return ResponseEntity.created(location).build();
 
 	}
@@ -126,11 +135,12 @@ public class SafetynetalertController {
 		Persons existingPerson = safetynetServiceController.findPersonsByFirstNameAndLastName(firstName, lastName);
 		
 		if (Objects.isNull(existingPerson)) {
-
 			throw new SafetynetalertNotFoundException("Person " + firstName + " " + lastName + " is not registered");
 
 		} else {
 
+			controllerLogger.info("Person " + firstName + " " + lastName + " found");
+			
 			existingPerson.setAddress(newPersonDetails.getAddress());
 			existingPerson.setCity(newPersonDetails.getCity());
 			existingPerson.setZip(newPersonDetails.getZip());
@@ -138,6 +148,7 @@ public class SafetynetalertController {
 			existingPerson.setEmail(newPersonDetails.getEmail());
 
 			final Persons updatePerson = safetynetServiceController.savePersons(existingPerson);
+			controllerLogger.info("Person " + firstName + " " + lastName + " updated");
 			return ResponseEntity.ok(updatePerson);
 		}
 	}
@@ -145,6 +156,7 @@ public class SafetynetalertController {
 	@DeleteMapping("person/{firstName}/{lastName}")
 	public void deleteOnePerson(@PathVariable String firstName, @PathVariable String lastName) {
 		safetynetServiceController.deletePersonsByFirstNameAndLastName(firstName, lastName);
+		controllerLogger.info("Person "+ firstName+" "+lastName+" deleted");
 	}
 
 //firestations modifier access
@@ -154,12 +166,14 @@ public class SafetynetalertController {
 		Firestations addedFirestation = safetynetServiceController.saveFirestations(firestation);
 		
 		if (Objects.isNull(addedFirestation)) {
-
+			controllerLogger.error("the posted firestation request body is empty");
 			return ResponseEntity.noContent().build();
 		} else {
 
 			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{stationAddress}")
 					.buildAndExpand(addedFirestation.getAddress()).toUri();
+			controllerLogger.debug("Posted firestation "+addedFirestation.getAddress()+" URI created");
+			controllerLogger.info("Posted firestation "+addedFirestation.getAddress()+" created");
 			return ResponseEntity.created(location).build();
 		}
 	}
@@ -175,10 +189,14 @@ public class SafetynetalertController {
 			throw new SafetynetalertNotFoundException("Firestation number "+stationNumber+", does not exist.");
 		}else {
 			
+			controllerLogger.info("Firestation number "+stationNumber+ " found");
+			
 			existingFirestation.setStation(newFirestationDetails.getStation());
 			existingFirestation.setAddress(newFirestationDetails.getAddress());
 			
 			final Firestations updatedFirestation = safetynetServiceController.saveFirestations(existingFirestation);
+			controllerLogger.info("Firestation number "+stationNumber+ " updated");
+
 			return ResponseEntity.ok(updatedFirestation);
 	
 		}
@@ -187,6 +205,7 @@ public class SafetynetalertController {
 	@DeleteMapping("firestation/{address}")
 	public void deleteFirestation(@PathVariable String address) {
 		safetynetServiceController.deleteFirestationsByAddress(address);
+		controllerLogger.info("Firestations cover on "+address+" deleted");
 	}
 
 //medicalRecords modifier access
@@ -197,12 +216,15 @@ public class SafetynetalertController {
 		
 		if (Objects.isNull(addedMedicalRecords)) {
 
+			controllerLogger.error("the posted medical records request body is empty");
 			return ResponseEntity.noContent().build();
 
 		} else {
 
 			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{firstName}/{lastName}")
 					.buildAndExpand(addedMedicalRecords.getFirstName(), addedMedicalRecords.getLastName()).toUri();
+			controllerLogger.debug("Posted medical records "+ addedMedicalRecords.getFirstName()+" "+addedMedicalRecords.getLastName()+" URI created");
+			controllerLogger.info("Posted medical records "+ addedMedicalRecords.getFirstName()+" "+addedMedicalRecords.getLastName()+" created");
 			return ResponseEntity.created(location).build();
 		}
 
@@ -220,11 +242,15 @@ public class SafetynetalertController {
 			throw new SafetynetalertNotFoundException(firstName + " " + lastName + " medical records not registered");
 		} else {
 
+			controllerLogger.info(firstName + " " + lastName + "'s medical records found");
+			
 			existingMedicalRecords.setAllergies(newMedicalRecordsDetails.getAllergies());
 			existingMedicalRecords.setBirthDate(newMedicalRecordsDetails.getBirthDate());
 			existingMedicalRecords.setMedications(newMedicalRecordsDetails.getMedications());
 
 			MedicalRecords updatedMedicalRecords = safetynetServiceController.saveMedicalRecords(existingMedicalRecords);
+			controllerLogger.info(firstName + " " + lastName + "'s medical updated");
+			
 			return ResponseEntity.ok(updatedMedicalRecords);
 		}
 
@@ -233,6 +259,7 @@ public class SafetynetalertController {
 	@DeleteMapping("medicalRecord/{firstName}/{lastName}")
 	public void deleteMedicalRecords(@PathVariable String firstName, @PathVariable String lastName) {
 		safetynetServiceController.deleteMedicalRecordsByFirstNameAndLastName(firstName, lastName);
+		controllerLogger.info(firstName+" "+lastName+"'s medical records deleted");
 	}
 
 //test read

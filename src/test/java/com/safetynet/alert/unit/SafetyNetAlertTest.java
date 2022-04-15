@@ -40,4 +40,9 @@ public class SafetyNetAlertTest {
 			.andExpect(status().isOk());
 	}	
 
+	@Test
+	public void testgetFloodTwo() throws Exception {
+		mockMvc.perform(get("/flood/1/2"))
+			.andExpect(status().isOk());
+	}	
 }

@@ -126,9 +126,13 @@ public class SafetynetService {
 		return personsInfoServiceRepository.getPersonsInfoUrl(firstName, lastName);
 	}
 	
-	public Iterable<FloodStations> getFloodStations(List<String> stationsTable) {
-		return floodStationsServiceRepository.getFloodStationsUrl(stationsTable);
-	}	
+	public Iterable<FloodStations> getFloodOneStations(int stationsTable) {
+		return floodStationsServiceRepository.getFloodOneStationsUrl(stationsTable);
+	}
+	
+	public Iterable<FloodStations> getFloodTwoStations(int stationOne, int stationTwo) {
+		return floodStationsServiceRepository.getFloodTwoStationsUrl(stationOne, stationTwo);
+	}
 
 //URL modifiers
 	
