@@ -23,13 +23,14 @@ public class SafetyNetAlertTest {
 	
 	@Test
 	public void testgetFloodOne() throws Exception {
-		mockMvc.perform(get("/flood/1"))
+		mockMvc.perform(get("/flood/stations?stations=1"))
 			.andExpect(status().isOk());
 	}	
-
+	
 	@Test
-	public void testgetFloodTwo() throws Exception {
-		mockMvc.perform(get("/flood/1/2"))
+	public void testgetFloodOneAndTwo() throws Exception {
+		mockMvc.perform(get("/flood/stations?stations=1,2"))
 			.andExpect(status().isOk());
 	}	
+	
 }

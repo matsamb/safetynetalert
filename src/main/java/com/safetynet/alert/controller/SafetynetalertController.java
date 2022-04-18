@@ -1,8 +1,9 @@
 package com.safetynet.alert.controller;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -51,53 +53,53 @@ public class SafetynetalertController {
 	}
 	
 //URL	
-	@GetMapping("firestation/{stationNumber}")
-	public Iterable<StationNumber> getStationNumber(@PathVariable int stationNumber) {
+	@GetMapping("firestation")//?stationNumber=<station>
+	public Iterable<StationNumber> getStationNumber(@RequestParam int stationNumber) {
 		controllerLogger.info("URI firestation/"+stationNumber+", displayed");
 		return safetynetServiceController.getCustomStationNumber(stationNumber);
 	}
 	
-	@GetMapping("phoneAlert/{station}")
-	public Iterable<PhoneAlert> getPhoneAlert(@PathVariable int station) {
+	@GetMapping("phoneAlert")//?station=<station>
+	public Iterable<PhoneAlert> getPhoneAlert(@RequestParam int station) {
 		controllerLogger.info("URI phoneAlert/"+station+", displayed");
 		return safetynetServiceController.getCustomPhoneAlert(station);
 	}
 	
-	@GetMapping("childAlert/{address}")
-	public Iterable<ChildAlert> getChildAlert(@PathVariable String address) {
+	@GetMapping("childAlert")//?address=<address>
+	public Iterable<ChildAlert> getChildAlert(@RequestParam String address) {
 		controllerLogger.info("URI childAlert/"+address+", displayed");
 		return safetynetServiceController.getCustomChildAlert(address);
 	}
 	
-	@GetMapping("communityEmail/{city}") // email de tous les habitants
-	public Iterable<CommunityEmail> getCommunityEmail(@PathVariable String city) {
+	@GetMapping("communityEmail")/*?city=<city>"*/ // email de tous les habitants
+	public Iterable<CommunityEmail> getCommunityEmail(@RequestParam String city) {
 		controllerLogger.info("URI communityEmail/"+city+", displayed");
 		return safetynetServiceController.getCustomCommunityEmail(city);
 	}
 	
-	@GetMapping("fire/{address}")
-	public Iterable<FirePlaces> getFirePlaces(@PathVariable String address){
+	@GetMapping("fire")//?address=<address>
+	public Iterable<FirePlaces> getFirePlaces(@RequestParam String address){
 		controllerLogger.info("URI fire/"+address+", displayed");
 		return safetynetServiceController.getFirePlaces(address);
 	}
 	
-	@GetMapping("personsInfo/{firstName}&{lastName}")
-	public Iterable<PersonsInfo> getPersonsInfo(@PathVariable(value = "firstName") String firstName,
-			@PathVariable(value = "lastName") String lastName) {
+	@GetMapping("personsInfo")//?firstName=<firstName>&lastName=<lastName>
+	public Iterable<PersonsInfo> getPersonsInfo(@RequestParam(value = "firstName") String firstName,
+			@RequestParam(value = "lastName") String lastName) {
 		controllerLogger.info("URI personsInfo/"+firstName+"&"+lastName+", displayed");
 		return safetynetServiceController.getPersonsInfo(firstName, lastName);
 	}
-	
-	@GetMapping("flood/{stations}")
-	public Iterable<FloodStations> getFloodOneStations(@PathVariable int stations){
+		
+	@GetMapping("flood/stations")//?stations=1,2,3,4
+	public Iterable<FloodStations> getFloodStations(@RequestParam(value = "stations") List<Integer> stations){
 		controllerLogger.info("URI flood/"+stations+", displayed");
-		return safetynetServiceController.getFloodOneStations(stations);
-	}
-	
-	@GetMapping("flood/{stationOne}/{stationTwo}")
-	public Iterable<FloodStations> getFloodTwoStations(@PathVariable(value = "stationOne") int stationOne, @PathVariable(value = "stationTwo") int stationTwo){
-		controllerLogger.info("URI flood/"+stationOne+"/"+stationTwo+", displayed");
-		return safetynetServiceController.getFloodTwoStations(stationOne, stationTwo);
+		List<FloodStations> iFloodStations = new ArrayList<FloodStations>();
+		stations.forEach(station->{	
+		System.out.println(station);
+		iFloodStations.forEach(System.out::println);
+		iFloodStations.addAll(safetynetServiceController.getFloodStations(station));
+		});
+		return iFloodStations;
 	}
 		  
 //persons modifier access

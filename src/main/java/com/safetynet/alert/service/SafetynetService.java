@@ -130,13 +130,9 @@ public class SafetynetService {
 	public Iterable<PersonsInfo> getPersonsInfo(String firstName, String lastName) {
 		return personsInfoServiceRepository.getPersonsInfoUrl(firstName, lastName);
 	}
-	
-	public Iterable<FloodStations> getFloodOneStations(int stationsTable) {
-		return floodStationsServiceRepository.getFloodOneStationsUrl(stationsTable);
-	}
-	
-	public Iterable<FloodStations> getFloodTwoStations(int stationOne, int stationTwo) {
-		return floodStationsServiceRepository.getFloodTwoStationsUrl(stationOne, stationTwo);
+		
+	public List<FloodStations> getFloodStations(Integer station) {
+		return floodStationsServiceRepository.getFloodStationsUrl(station);
 	}
 
 //IO	
@@ -323,6 +319,5 @@ public class SafetynetService {
 		serviceJdbcTemplate.execute("create table if not exists young (first_name varchar(50), last_name varchar(50), birth_date varchar (50), Age integer, address varchar(100), primary key (first_name, last_name));");
 		serviceJdbcTemplate.execute("insert ignore into young (first_name, last_name, birth_date, Age, address) SELECT distinct medical_records.*, DATE_FORMAT(FROM_DAYS(DATEDIFF(curdate(),STR_TO_DATE(medical_records.birth_date,'%m/%d/%Y'))), '%Y')+0 AS Age, persons.address from persons, medical_records where DATE_FORMAT(FROM_DAYS(DATEDIFF(curdate(),STR_TO_DATE(medical_records.birth_date,'%m/%d/%Y'))), '%Y')+0 < 18 and persons.first_name= medical_records.first_name;");
 	}
-
 
 }
