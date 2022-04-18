@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>com.safetynet</groupId>
 	<artifactId>safetynetalert</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>safetynetalert</name>
 	<description>alert for emergency information system</description>
 	<properties>
