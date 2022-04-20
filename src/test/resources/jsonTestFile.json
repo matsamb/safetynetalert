@@ -10,9 +10,9 @@
 			"email": "jaboyd@email.com"
 		},
 		{
-			"firstName": "Jane",
-			"lastName": "Boyd",
-			"address": "1509 Culver St",
+			"firstName": "Sophia",
+			"lastName": "Zemicks",
+			"address": "112 Steppes Pl",
 			"city": "Culver",
 			"zip": "97451",
 			"phone": "841-874-6512",
@@ -25,7 +25,7 @@
 			"station": "3"
 		},
 		{
-			"address": "1209 Culver St",
+			"address": "112 Steppes Pl",
 			"station": "2"
 		}
 	],
@@ -43,7 +43,7 @@
 		,{
 			"firstName": "Marc",
 			"lastName": "Cadigan",
-			"birthdate": "08/06/1945",
+			"birthdate": "08/06/2015",
 			"medications": [
 				"tradoxidine:400mg"
 			],

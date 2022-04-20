@@ -115,8 +115,12 @@ public class SafetynetService {
 		return phoneAlertServiceRepository.getCustomPhoneAlertUrl(station);
 	}
 
-	public Iterable<ChildAlert> getCustomChildAlert(String address) {
+	public ChildAlert[] getCustomChildAlert(String address)/*public List<ChildAlert> getCustomChildAlert(String address)*/ {
 		return childAlertServiceRepository.getCustomChildAlertUrl(address);
+	}
+	
+	public ChildAlert[] getCustomChildAlertAdult(String address) {
+		return childAlertServiceRepository.getCustomChildAlertAdult(address);
 	}
 	
 	public Iterable<CommunityEmail> getCustomCommunityEmail(String city) {
@@ -130,21 +134,17 @@ public class SafetynetService {
 	public Iterable<PersonsInfo> getPersonsInfo(String firstName, String lastName) {
 		return personsInfoServiceRepository.getPersonsInfoUrl(firstName, lastName);
 	}
-	
-	public Iterable<FloodStations> getFloodOneStations(int stationsTable) {
-		return floodStationsServiceRepository.getFloodOneStationsUrl(stationsTable);
-	}
-	
-	public Iterable<FloodStations> getFloodTwoStations(int stationOne, int stationTwo) {
-		return floodStationsServiceRepository.getFloodTwoStationsUrl(stationOne, stationTwo);
+		
+	public List<FloodStations> getFloodStations(Integer station) {
+		return floodStationsServiceRepository.getFloodStationsUrl(station);
 	}
 
 //IO	
 
-	public String jsonToString() {
-		Resource resource = serviceFactory.loadSafetynetAlertDataWithClassPathResource();
+	public String jsonToString(   ) {
+		
 		List<String> jsonAsListOfStrings = null;
-
+		Resource resource = serviceFactory.loadSafetynetAlertDataWithClassPathResource();
 		try (BufferedReader finalReader = new BufferedReader(new InputStreamReader(resource.getInputStream(),"UTF-8"))) {
 			jsonAsListOfStrings = finalReader.lines().collect(Collectors.toList());
 			safetynetServiceLogger.info("file reader service get file content correctly");
@@ -176,9 +176,9 @@ public class SafetynetService {
 	}
 
 	
-	public void jsonToPersonsDatabase() {
+	public void jsonToPersonsDatabase(   ) {
 
-		String jsonString = this.jsonToString();
+		String jsonString = this.jsonToString( );
 
 		String personsJsonArrayString = jsonString.substring(jsonString.indexOf('['), jsonString.indexOf(']') + 1);
 		safetynetServiceLogger.trace("json persons array as string correctly extracted from json source file string");
@@ -226,9 +226,9 @@ public class SafetynetService {
 		medicalRecordsServiceRepository.deleteByFirstNameAndLastName(firstName, lastName);		
 	}
 
-	public void jsonToMedicalRecordsDatabaseTable() {
+	public void jsonToMedicalRecordsDatabaseTable(   ) {
 
-		String jsonString = this.jsonToString();
+		String jsonString = this.jsonToString( );
 
 		String medicalrecordsJsonArrayString = jsonString.substring(
 				jsonString.indexOf('[', jsonString.indexOf(']', jsonString.indexOf(']') + 1) + 1),
@@ -280,9 +280,9 @@ public class SafetynetService {
 		firestationsServiceRepository.deleteByAddress(address);		
 	}
 
-	public void jsonToFireStationsDatabaseTable() {
+	public void jsonToFireStationsDatabaseTable(   ) {
 
-		String jsonString = this.jsonToString();
+		String jsonString = this.jsonToString( );
 
 		String firestationsJsonArrayString = jsonString.substring(jsonString.indexOf('[', jsonString.indexOf(']')),
 				jsonString.indexOf(']', jsonString.indexOf(']') + 1) + 1);
@@ -323,6 +323,5 @@ public class SafetynetService {
 		serviceJdbcTemplate.execute("create table if not exists young (first_name varchar(50), last_name varchar(50), birth_date varchar (50), Age integer, address varchar(100), primary key (first_name, last_name));");
 		serviceJdbcTemplate.execute("insert ignore into young (first_name, last_name, birth_date, Age, address) SELECT distinct medical_records.*, DATE_FORMAT(FROM_DAYS(DATEDIFF(curdate(),STR_TO_DATE(medical_records.birth_date,'%m/%d/%Y'))), '%Y')+0 AS Age, persons.address from persons, medical_records where DATE_FORMAT(FROM_DAYS(DATEDIFF(curdate(),STR_TO_DATE(medical_records.birth_date,'%m/%d/%Y'))), '%Y')+0 < 18 and persons.first_name= medical_records.first_name;");
 	}
-
 
 }

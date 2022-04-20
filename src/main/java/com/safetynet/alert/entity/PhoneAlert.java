@@ -5,6 +5,7 @@ import javax.persistence.Id;
 
 import lombok.Data;
 
+//@lombok.Generated
 @Entity
 @Data
 public class PhoneAlert {
@@ -12,5 +13,4 @@ public class PhoneAlert {
 	@Id
 	String phone;
 	
-	int station;
 }

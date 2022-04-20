@@ -24,7 +24,7 @@ public final class PersonsKey implements Serializable{
 	
 	
 	
-	
+/*	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -44,7 +44,7 @@ public final class PersonsKey implements Serializable{
 	@Override
 	public String toString() {
 		return "Persons Key [firstName=" + firstName + ", lastName=" + lastName + "]";
-	}
+	}*/
 	
 	
 }

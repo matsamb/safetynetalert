@@ -4,9 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 
-@lombok.Generated
 @Embeddable
-public class Medications implements Serializable, Cloneable {
+public class Medications implements Serializable{
 
 	/**
 	 * 
@@ -28,7 +27,7 @@ public class Medications implements Serializable, Cloneable {
 		this.medication = medication;
 	}
 
-	@Override
+/*	@Override
 	public Object clone() {
 		Object medicationsClone = null;
 		try {
@@ -38,5 +37,5 @@ public class Medications implements Serializable, Cloneable {
 		}	
 		return medicationsClone;
 	}
-	
+	*/
 }

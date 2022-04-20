@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+//@lombok.Generated
 @IdClass(com.safetynet.alert.entity.PersonsKey.class)
 @Entity
 @Data

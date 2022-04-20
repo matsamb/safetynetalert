@@ -8,6 +8,8 @@ import com.safetynet.alert.entity.CommunityEmail;
 
 public interface CommunityEmailRepository extends JpaRepository<CommunityEmail, String>{
 
-	@Query(value="select distinct persons.email, persons.city from persons where persons.city = 'culver' order by persons.email asc ;",nativeQuery = true)
+	@Query(value=
+			"select distinct persons.email from persons where persons.city = :city order by persons.email asc ;"
+			,nativeQuery = true)
 	Iterable<CommunityEmail> getCustomCommunityEmailUrl(@Param(value="city") String city);
 }

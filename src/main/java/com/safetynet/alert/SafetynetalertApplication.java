@@ -21,7 +21,7 @@ public class SafetynetalertApplication implements CommandLineRunner{
 	
 	@Autowired
 	private SafetynetService safetynetService;
-
+	
 	@Override
 	public void run(String... args) throws Exception {
 

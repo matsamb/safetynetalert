@@ -15,7 +15,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.TestPropertySource;
 import com.safetynet.alert.controller.SafetynetalertController;
 import com.safetynet.alert.entity.Allergies;
 import com.safetynet.alert.entity.Firestations;
@@ -25,7 +24,6 @@ import com.safetynet.alert.entity.Persons;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @EnableAutoConfiguration
-@TestPropertySource(locations = "classpath:applicationIT.properties")
 public class SafetyNetAlertIntegrationTests {
 
 	@LocalServerPort
@@ -51,61 +49,61 @@ public class SafetyNetAlertIntegrationTests {
 	@Test
 	public void givenFirestationNumberFourUrlWhenServerUpThenItShouldReturnStationFourCoverageDetails()
 			throws Exception {
-		String coverageDetails = "[{\"firstName\":\"Allison\",\"lastName\":\"Boyd\",\"phone\":\"841-874-9888\",\"birthDate\":\"03/15/1965\",\"age\":57,\"station\":4,\"address\":\"112 Steppes Pl\"},{\"firstName\":\"Lily\",\"lastName\":\"Cooper\",\"phone\":\"841-874-9845\",\"birthDate\":\"03/06/1994\",\"age\":28,\"station\":4,\"address\":\"489 Manchester St\"},{\"firstName\":\"Ron\",\"lastName\":\"Peters\",\"phone\":\"841-874-8888\",\"birthDate\":\"04/06/1965\",\"age\":57,\"station\":4,\"address\":\"112 Steppes Pl\"},{\"firstName\":\"Tony\",\"lastName\":\"Cooper\",\"phone\":\"841-874-6874\",\"birthDate\":\"03/06/1994\",\"age\":28,\"station\":4,\"address\":\"112 Steppes Pl\"}]";
+		String coverageDetails = "[{\"firstName\":\"Allison\",\"lastName\":\"Boyd\",\"phone\":\"841-874-9888\",\"address\":\"112 Steppes Pl\"},{\"firstName\":\"Lily\",\"lastName\":\"Cooper\",\"phone\":\"841-874-9845\",\"address\":\"489 Manchester St\"},{\"firstName\":\"Ron\",\"lastName\":\"Peters\",\"phone\":\"841-874-8888\",\"address\":\"112 Steppes Pl\"},{\"firstName\":\"Tony\",\"lastName\":\"Cooper\",\"phone\":\"841-874-6874\",\"address\":\"112 Steppes Pl\"}]";
 
-		assertThat(this.alertRestTemplate.getForObject("http://localhost:" + port + "/firestation/4", String.class))
+		assertThat(this.alertRestTemplate.getForObject("http://localhost:" + port + "/firestation?stationNumber=4", String.class))
 				.contains(coverageDetails);
 	}
 
 	@Test
 	public void givenPhoneAlertStationOneUrlWhenServerUpThenItShouldReturnPhoneAlertStationOneDetails()
 			throws Exception {
-		String phoneAlertStationOneDetails = "[{\"phone\":\"841-874-6512\",\"station\":1},{\"phone\":\"841-874-7462\",\"station\":1},{\"phone\":\"841-874-7784\",\"station\":1},{\"phone\":\"841-874-7784\",\"station\":1},{\"phone\":\"841-874-7784\",\"station\":1},{\"phone\":\"841-874-8547\",\"station\":1}]";
+		String phoneAlertStationOneDetails = "[{\"phone\":\"841-874-6512\"},{\"phone\":\"841-874-7462\"},{\"phone\":\"841-874-7784\"},{\"phone\":\"841-874-7784\"},{\"phone\":\"841-874-7784\"},{\"phone\":\"841-874-8547\"}]";
 
-		assertThat(this.alertRestTemplate.getForObject("http://localhost:" + port + "/phoneAlert/1", String.class))
+		assertThat(this.alertRestTemplate.getForObject("http://localhost:" + port + "/phoneAlert?station=1", String.class))
 				.contains(phoneAlertStationOneDetails);
 	}
 
 	@Test
 	public void givenChildAlert1509CulverStUrlWhenServerUpThenItShouldReturnChildAlert1509CulverStDetails()
 			throws Exception {
-		String childAlert1509CulverStDetails = "[{\"firstName\":\"Roger\",\"lastName\":\"Boyd\",\"birthDate\":\"09/06/2017\",\"age\":4,\"address\":\"1509 Culver St\",\"id\":1},{\"firstName\":\"Tenley\",\"lastName\":\"Boyd\",\"birthDate\":\"02/18/2012\",\"age\":10,\"address\":\"1509 Culver St\",\"id\":2},{\"firstName\":\"Jacob\",\"lastName\":\"Boyd\",\"birthDate\":\"03/06/1989\",\"age\":33,\"address\":\"1509 Culver St\",\"id\":1},{\"firstName\":\"Felicia\",\"lastName\":\"Boyd\",\"birthDate\":\"01/08/1986\",\"age\":36,\"address\":\"1509 Culver St\",\"id\":2},{\"firstName\":\"John\",\"lastName\":\"Boyd\",\"birthDate\":\"03/06/1984\",\"age\":38,\"address\":\"1509 Culver St\",\"id\":3}]";
-		assertThat(this.alertRestTemplate.getForObject("http://localhost:" + port + "/childAlert/1509 Culver St",
+		String childAlert1509CulverStDetails = "{\"child\":[{\"firstName\":\"Roger\",\"lastName\":\"Boyd\",\"age\":4},{\"firstName\":\"Tenley\",\"lastName\":\"Boyd\",\"age\":10}],\"adult\":[{\"firstName\":\"Felicia\",\"lastName\":\"Boyd\",\"age\":36},{\"firstName\":\"Jacob\",\"lastName\":\"Boyd\",\"age\":33},{\"firstName\":\"John\",\"lastName\":\"Boyd\",\"age\":38}]}"; 
+
+				assertThat(this.alertRestTemplate.getForObject("http://localhost:" + port + "/childAlert?address=1509 Culver St",
 				String.class)).contains(childAlert1509CulverStDetails);
 	}
 
 	@Test
 	public void givenCommunityEmailCulverWhenServerUpThenItShouldReturnCommunityEmailDetails() throws Exception {
-		String communityEmailDetails = "[{\"email\":\"aly@imail.com\",\"city\":\"Culver\"},{\"email\":\"bstel@email.com\",\"city\":\"Culver\"},{\"email\":\"clivfd@ymail.com\",\"city\":\"Culver\"},{\"email\":\"drk@email.com\",\"city\":\"Culver\"},{\"email\":\"gramps@email.com\",\"city\":\"Culver\"},{\"email\":\"jaboyd@email.com\",\"city\":\"Culver\"},{\"email\":\"jpeter@email.com\",\"city\":\"Culver\"},{\"email\":\"lily@email.com\",\"city\":\"Culver\"},{\"email\":\"reg@email.com\",\"city\":\"Culver\"},{\"email\":\"soph@email.com\",\"city\":\"Culver\"},{\"email\":\"ssanw@email.com\",\"city\":\"Culver\"},{\"email\":\"tcoop@ymail.com\",\"city\":\"Culver\"},{\"email\":\"tenz@email.com\",\"city\":\"Culver\"},{\"email\":\"ward@email.com\",\"city\":\"Culver\"},{\"email\":\"zarc@email.com\",\"city\":\"Culver\"}]";
+		String communityEmailDetails = "[{\"email\":\"aly@imail.com\"},{\"email\":\"bstel@email.com\"},{\"email\":\"clivfd@ymail.com\"},{\"email\":\"drk@email.com\"},{\"email\":\"gramps@email.com\"},{\"email\":\"jaboyd@email.com\"},{\"email\":\"jpeter@email.com\"},{\"email\":\"lily@email.com\"},{\"email\":\"reg@email.com\"},{\"email\":\"soph@email.com\"},{\"email\":\"ssanw@email.com\"},{\"email\":\"tcoop@ymail.com\"},{\"email\":\"tenz@email.com\"},{\"email\":\"ward@email.com\"},{\"email\":\"zarc@email.com\"}]";
 
-		assertThat(this.alertRestTemplate.getForObject("http://localhost:" + port + "/communityEmail/Culver",
+		assertThat(this.alertRestTemplate.getForObject("http://localhost:" + port + "/communityEmail?city=Culver",
 				String.class)).contains(communityEmailDetails);
 	}
 
 	@Test
 	public void givenFire951LoneTreeRdWhenServerUpThenItShouldReturnFireDetails() throws Exception {
-		String fireDetails = "[{\"id\":1,\"firstName\":\"Eric\",\"lastName\":\"Cadigan\",\"address\":\"951 LoneTree Rd\",\"phone\":\"841-874-7458\",\"medication\":\"tradoxidine:400mg\",\"allergy\":\"N_A\",\"station\":2}]";
+		String fireDetails = "[{\"firstName\":\"Eric\",\"lastName\":\"Cadigan\",\"phone\":\"841-874-7458\",\"medication\":\"tradoxidine:400mg\",\"allergy\":\"N_A\",\"station\":2}]";
 
 		assertThat(
-				this.alertRestTemplate.getForObject("http://localhost:" + port + "/fire/951 LoneTree Rd", String.class))
+				this.alertRestTemplate.getForObject("http://localhost:" + port + "/fire?address=951 LoneTree Rd", String.class))
 						.contains(fireDetails);
 
 	}
 
 	@Test
 	public void givenPersonsInfoSophiaZemicksWhenServerUpThenItShouldReturnPersonsInfoDetails() throws Exception {
-		String personsInfoDetails = "[{\"id\":1,\"firstName\":\"Sophia\",\"lastName\":\"Zemicks\",\"address\":\"892 Downing Ct\",\"age\":34,\"email\":\"soph@email.com\",\"medication\":\"terazine:500mg\",\"allergy\":\"peanut\"},{\"id\":2,\"firstName\":\"Sophia\",\"lastName\":\"Zemicks\",\"address\":\"892 Downing Ct\",\"age\":34,\"email\":\"soph@email.com\",\"medication\":\"pharmacol:5000mg\",\"allergy\":\"peanut\"},{\"id\":3,\"firstName\":\"Sophia\",\"lastName\":\"Zemicks\",\"address\":\"892 Downing Ct\",\"age\":34,\"email\":\"soph@email.com\",\"medication\":\"hydrapermazol:900mg\",\"allergy\":\"peanut\"},{\"id\":4,\"firstName\":\"Sophia\",\"lastName\":\"Zemicks\",\"address\":\"892 Downing Ct\",\"age\":34,\"email\":\"soph@email.com\",\"medication\":\"aznol:60mg\",\"allergy\":\"peanut\"},{\"id\":5,\"firstName\":\"Sophia\",\"lastName\":\"Zemicks\",\"address\":\"892 Downing Ct\",\"age\":34,\"email\":\"soph@email.com\",\"medication\":\"aznol:60mg\",\"allergy\":\"shellfish\"},{\"id\":6,\"firstName\":\"Sophia\",\"lastName\":\"Zemicks\",\"address\":\"892 Downing Ct\",\"age\":34,\"email\":\"soph@email.com\",\"medication\":\"aznol:60mg\",\"allergy\":\"aznol\"}]";
+		String personsInfoDetails = "[{\"firstName\":\"Sophia\",\"lastName\":\"Zemicks\",\"address\":\"892 Downing Ct\",\"age\":34,\"email\":\"soph@email.com\",\"medication\":\"aznol:60mg\",\"allergy\":\"peanut\"},{\"firstName\":\"Sophia\",\"lastName\":\"Zemicks\",\"address\":\"892 Downing Ct\",\"age\":34,\"email\":\"soph@email.com\",\"medication\":\"hydrapermazol:900mg\",\"allergy\":\"peanut\"},{\"firstName\":\"Sophia\",\"lastName\":\"Zemicks\",\"address\":\"892 Downing Ct\",\"age\":34,\"email\":\"soph@email.com\",\"medication\":\"pharmacol:5000mg\",\"allergy\":\"peanut\"},{\"firstName\":\"Sophia\",\"lastName\":\"Zemicks\",\"address\":\"892 Downing Ct\",\"age\":34,\"email\":\"soph@email.com\",\"medication\":\"terazine:500mg\",\"allergy\":\"peanut\"},{\"firstName\":\"Sophia\",\"lastName\":\"Zemicks\",\"address\":\"892 Downing Ct\",\"age\":34,\"email\":\"soph@email.com\",\"medication\":\"aznol:60mg\",\"allergy\":\"shellfish\"},{\"firstName\":\"Sophia\",\"lastName\":\"Zemicks\",\"address\":\"892 Downing Ct\",\"age\":34,\"email\":\"soph@email.com\",\"medication\":\"aznol:60mg\",\"allergy\":\"aznol\"}]";
 
-		assertThat(this.alertRestTemplate.getForObject("http://localhost:" + port + "/personsInfo/Sophia&Zemicks",
+		assertThat(this.alertRestTemplate.getForObject("http://localhost:" + port + "/personInfo?firstName=sophia&lastName=zemicks",
 				String.class)).contains(personsInfoDetails);
 
 	}
 
 	@Test
 	public void givenFloodStationOneWhenServerUpThenItShouldReturnFloodDetails() throws Exception {
-		String floodDetails = "[{\"id\":1,\"firstName\":\"Reginold\",\"lastName\":\"Walker\",\"address\":\"908 73rd St\",\"age\":42,\"phone\":\"841-874-8547\",\"station\":1,\"medication\":\"thradox:700mg\",\"allergy\":\"illisoxian\"},{\"id\":2,\"firstName\":\"Kendrik\",\"lastName\":\"Stelzer\",\"address\":\"947 E. Rose Dr\",\"age\":8,\"phone\":\"841-874-7784\",\"station\":1,\"medication\":\"pharmacol:2500mg\",\"allergy\":\"N_A\"},{\"id\":3,\"firstName\":\"Kendrik\",\"lastName\":\"Stelzer\",\"address\":\"947 E. Rose Dr\",\"age\":8,\"phone\":\"841-874-7784\",\"station\":1,\"medication\":\"noxidian:100mg\",\"allergy\":\"N_A\"},{\"id\":4,\"firstName\":\"Jamie\",\"lastName\":\"Peters\",\"address\":\"908 73rd St\",\"age\":40,\"phone\":\"841-874-7462\",\"station\":1,\"medication\":\"N_A\",\"allergy\":\"N_A\"},{\"id\":5,\"firstName\":\"Peter\",\"lastName\":\"Duncan\",\"address\":\"644 Gershwin Cir\",\"age\":21,\"phone\":\"841-874-6512\",\"station\":1,\"medication\":\"N_A\",\"allergy\":\"shellfish\"},{\"id\":6,\"firstName\":\"Brian\",\"lastName\":\"Stelzer\",\"address\":\"947 E. Rose Dr\",\"age\":46,\"phone\":\"841-874-7784\",\"station\":1,\"medication\":\"ibupurin:200mg\",\"allergy\":\"nillacilan\"},{\"id\":7,\"firstName\":\"Brian\",\"lastName\":\"Stelzer\",\"address\":\"947 E. Rose Dr\",\"age\":46,\"phone\":\"841-874-7784\",\"station\":1,\"medication\":\"hydrapermazol:400mg\",\"allergy\":\"nillacilan\"}]";
-
-		assertThat(this.alertRestTemplate.getForObject("http://localhost:" + port + "/flood/1", String.class))
+		String floodDetails = "[{\"firstName\":\"Brian\",\"lastName\":\"Stelzer\",\"address\":\"947 E. Rose Dr\",\"age\":46,\"phone\":\"841-874-7784\",\"medication\":\"ibupurin:200mg\",\"allergy\":\"nillacilan\"},{\"firstName\":\"Brian\",\"lastName\":\"Stelzer\",\"address\":\"947 E. Rose Dr\",\"age\":46,\"phone\":\"841-874-7784\",\"medication\":\"hydrapermazol:400mg\",\"allergy\":\"nillacilan\"},{\"firstName\":\"Jamie\",\"lastName\":\"Peters\",\"address\":\"908 73rd St\",\"age\":40,\"phone\":\"841-874-7462\",\"medication\":\"N_A\",\"allergy\":\"N_A\"},{\"firstName\":\"Kendrik\",\"lastName\":\"Stelzer\",\"address\":\"947 E. Rose Dr\",\"age\":8,\"phone\":\"841-874-7784\",\"medication\":\"noxidian:100mg\",\"allergy\":\"N_A\"},{\"firstName\":\"Kendrik\",\"lastName\":\"Stelzer\",\"address\":\"947 E. Rose Dr\",\"age\":8,\"phone\":\"841-874-7784\",\"medication\":\"pharmacol:2500mg\",\"allergy\":\"N_A\"},{\"firstName\":\"Reginold\",\"lastName\":\"Walker\",\"address\":\"908 73rd St\",\"age\":42,\"phone\":\"841-874-8547\",\"medication\":\"thradox:700mg\",\"allergy\":\"illisoxian\"},{\"firstName\":\"Peter\",\"lastName\":\"Duncan\",\"address\":\"644 Gershwin Cir\",\"age\":21,\"phone\":\"841-874-6512\",\"medication\":\"N_A\",\"allergy\":\"shellfish\"}]";
+		assertThat(this.alertRestTemplate.getForObject("http://localhost:" + port + "/flood/stations?stations=1", String.class))
 				.contains(floodDetails);
 
 	}
