@@ -4,9 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 
-//@lombok.Generated
 @Embeddable
-public class Medications implements Serializable, Cloneable {
+public class Medications implements Serializable{
 
 	/**
 	 * 

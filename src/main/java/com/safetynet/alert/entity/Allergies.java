@@ -4,9 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 
-//@lombok.Generated
 @Embeddable
-public class Allergies implements Serializable, Cloneable{
+public class Allergies implements Serializable{
 
 	/**
 	 * 

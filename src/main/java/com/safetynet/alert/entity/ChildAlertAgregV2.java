@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 import lombok.NoArgsConstructor;
 
-//@lombok.Generated
 @NoArgsConstructor
 public class ChildAlertAgregV2 implements Serializable, Cloneable {
 
@@ -17,11 +16,11 @@ public class ChildAlertAgregV2 implements Serializable, Cloneable {
 	private ChildAlert[] child;
 	private ChildAlert[] adult;
 	
-/*	public ChildAlertAgregV2(ChildAlert[] child, ChildAlert[] adult) {
+	public ChildAlertAgregV2(ChildAlert[] child, ChildAlert[] adult) {
 		super();
 		this.child = (ChildAlert[])child.clone();
 		this.adult =(ChildAlert[]) adult.clone();
-	}*/
+	}
 
 	public ChildAlert[] getChild() {
 		return (ChildAlert[])this.child.clone();
