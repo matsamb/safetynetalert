@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+//@lombok.Generated
 @IdClass(com.safetynet.alert.entity.FloodStationsKey.class)
 @Entity
 @NoArgsConstructor
@@ -17,11 +18,14 @@ import lombok.NoArgsConstructor;
 public @Data class FloodStations {
 
 	String firstName;	
-	String lastName;	
+
+	@Id
+	String lastName;
+	
 	String address;	
 	int age;	
 	String phone;
-	int station;	
+	
 	@Id
 	String medication;	
 	@Id

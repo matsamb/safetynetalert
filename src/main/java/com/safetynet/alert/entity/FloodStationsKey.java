@@ -3,6 +3,7 @@ package com.safetynet.alert.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
+//@lombok.Generated
 public class FloodStationsKey implements Serializable{
 
 	/**
@@ -11,12 +12,17 @@ public class FloodStationsKey implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	
+	//String firstName;
+	
+
+	String lastName;
+	
 	String medication;	
 	
 	String allergy;
 	
 	FloodStationsKey(){}
-
+/*
 	public FloodStationsKey(String medication, String allergy) {
 		super();
 		this.medication = medication;
@@ -45,6 +51,6 @@ public class FloodStationsKey implements Serializable{
 		return "FloodStationsKey [medication=" + medication + ", allergy=" + allergy + "]";
 	}
 	
-	
+	*/
 	
 }

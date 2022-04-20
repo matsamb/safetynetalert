@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 
+//@lombok.Generated
 @Embeddable
 public class Allergies implements Serializable, Cloneable{
 
@@ -27,7 +28,7 @@ public class Allergies implements Serializable, Cloneable{
 		this.allergy = allergy;
 	}
 	
-	@Override
+	/*@Override
 	public Object clone() {
 		Object allergiesClone = null;
 		try {
@@ -36,6 +37,6 @@ public class Allergies implements Serializable, Cloneable{
 			e.printStackTrace();
 		}		
 		return allergiesClone;
-	}
+	}*/
 	
 }

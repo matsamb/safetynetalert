@@ -3,6 +3,7 @@ package com.safetynet.alert.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
+//@lombok.Generated
 public final class PersonsKey implements Serializable{
 
 	/**
@@ -16,7 +17,7 @@ public final class PersonsKey implements Serializable{
 	
 	public PersonsKey() {}
 	
-	public PersonsKey(String firstName, String lastName) {
+/*	public PersonsKey(String firstName, String lastName) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -44,7 +45,7 @@ public final class PersonsKey implements Serializable{
 	@Override
 	public String toString() {
 		return "Persons Key [firstName=" + firstName + ", lastName=" + lastName + "]";
-	}
+	}*/
 	
 	
 }

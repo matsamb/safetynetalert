@@ -6,6 +6,7 @@ import javax.persistence.IdClass;
 
 import lombok.Data;
 
+//@lombok.Generated
 @IdClass(com.safetynet.alert.entity.PersonsKey.class)
 @Entity
 @Data
@@ -18,12 +19,8 @@ public class StationNumber {
 	String lastName;
 	
 	String phone;
-	
-	String birthDate;
-	
-	int age;
+
 	
 	String Address;
 	
-	int station;
 }

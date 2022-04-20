@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+//@lombok.Generated
 @IdClass(com.safetynet.alert.entity.PersonsKey.class)
 @Entity
 @Data

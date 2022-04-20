@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.safetynet.alert.entity.ChildAlert;
+import com.safetynet.alert.entity.ChildAlertAgregV2;
 import com.safetynet.alert.entity.CommunityEmail;
 import com.safetynet.alert.entity.FirePlaces;
 import com.safetynet.alert.entity.Firestations;
@@ -64,12 +64,45 @@ public class SafetynetalertController {
 		controllerLogger.info("URI phoneAlert/"+station+", displayed");
 		return safetynetServiceController.getCustomPhoneAlert(station);
 	}
-	
+
+//version1
+/*	@GetMapping("childAlert")//?address=<address>
+	public Iterable<ChildAlertAgreg> getChildAlert(@RequestParam String address) {
+		
+		List<ChildAlertAgreg> iChildAlertAgregsList = new ArrayList<ChildAlertAgreg>();
+		ChildAlertAgreg iChildAlertAgreg = new ChildAlertAgreg();
+		
+		if(safetynetServiceController.getCustomChildAlert(address)!= null) {
+			safetynetServiceController.getCustomChildAlert(address).forEach(child-> {
+					iChildAlertAgreg.setFirstName(child.getFirstName());
+					iChildAlertAgreg.setLastName(child.getLastName());
+					iChildAlertAgreg.setAge(child.getAge());
+					iChildAlertAgreg.setAdult(safetynetServiceController.getCustomChildAlertAdult(address));
+					iChildAlertAgregsList.add((ChildAlertAgreg)iChildAlertAgreg.clone());
+				});			
+		}
+		
+		controllerLogger.info("URI childAlert?address="+address+", displayed");
+		return iChildAlertAgregsList;
+	}*/
+//version2	
 	@GetMapping("childAlert")//?address=<address>
-	public Iterable<ChildAlert> getChildAlert(@RequestParam String address) {
-		controllerLogger.info("URI childAlert/"+address+", displayed");
-		return safetynetServiceController.getCustomChildAlert(address);
+	public ChildAlertAgregV2 getChildAlert(@RequestParam String address) {
+		
+		ChildAlertAgregV2 iChildAlertAgregsList = new ChildAlertAgregV2();
+		
+		if(safetynetServiceController.getCustomChildAlert(address)!= null) {
+			iChildAlertAgregsList.setChild(safetynetServiceController.getCustomChildAlert(address));
+			iChildAlertAgregsList.setAdult(safetynetServiceController.getCustomChildAlertAdult(address));
+					
+		}
+		
+		controllerLogger.info("URI childAlert?address="+address+", displayed");
+		return iChildAlertAgregsList;
 	}
+	
+	
+	
 	
 	@GetMapping("communityEmail")/*?city=<city>"*/ // email de tous les habitants
 	public Iterable<CommunityEmail> getCommunityEmail(@RequestParam String city) {
@@ -83,7 +116,7 @@ public class SafetynetalertController {
 		return safetynetServiceController.getFirePlaces(address);
 	}
 	
-	@GetMapping("personsInfo")//?firstName=<firstName>&lastName=<lastName>
+	@GetMapping("personInfo")//?firstName=<firstName>&lastName=<lastName>
 	public Iterable<PersonsInfo> getPersonsInfo(@RequestParam(value = "firstName") String firstName,
 			@RequestParam(value = "lastName") String lastName) {
 		controllerLogger.info("URI personsInfo/"+firstName+"&"+lastName+", displayed");
@@ -96,8 +129,8 @@ public class SafetynetalertController {
 		List<FloodStations> iFloodStations = new ArrayList<FloodStations>();
 		stations.forEach(station->{	
 		System.out.println(station);
-		iFloodStations.forEach(System.out::println);
 		iFloodStations.addAll(safetynetServiceController.getFloodStations(station));
+		iFloodStations.forEach(System.out::println);
 		});
 		return iFloodStations;
 	}
