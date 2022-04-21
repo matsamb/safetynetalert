@@ -11,19 +11,13 @@ public class SafetynetalertFactory {
 	
 	public SafetynetalertFactory() {}
 	
-	//@Bean
+	
 	public Resource loadSafetynetAlertDataWithClassPathResource() {
 	    return new ClassPathResource("/rest.json");
 	}
 	
-	//@Bean
 	public ObjectMapper getObjectMapper() {
 		return new ObjectMapper();
-	}
-
-	//@Bean
-	public Resource loadSafetynetAlertTestDataWithClassPathResource() {
-		return new ClassPathResource("/jsonTestFile.json");
 	}
 
 }
