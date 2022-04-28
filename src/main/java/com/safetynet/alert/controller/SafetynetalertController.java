@@ -65,26 +65,6 @@ public class SafetynetalertController {
 		return safetynetServiceController.getCustomPhoneAlert(station);
 	}
 
-//version1
-/*	@GetMapping("childAlert")//?address=<address>
-	public Iterable<ChildAlertAgreg> getChildAlert(@RequestParam String address) {
-		
-		List<ChildAlertAgreg> iChildAlertAgregsList = new ArrayList<ChildAlertAgreg>();
-		ChildAlertAgreg iChildAlertAgreg = new ChildAlertAgreg();
-		
-		if(safetynetServiceController.getCustomChildAlert(address)!= null) {
-			safetynetServiceController.getCustomChildAlert(address).forEach(child-> {
-					iChildAlertAgreg.setFirstName(child.getFirstName());
-					iChildAlertAgreg.setLastName(child.getLastName());
-					iChildAlertAgreg.setAge(child.getAge());
-					iChildAlertAgreg.setAdult(safetynetServiceController.getCustomChildAlertAdult(address));
-					iChildAlertAgregsList.add((ChildAlertAgreg)iChildAlertAgreg.clone());
-				});			
-		}
-		
-		controllerLogger.info("URI childAlert?address="+address+", displayed");
-		return iChildAlertAgregsList;
-	}*/
 //version2	
 	@GetMapping("childAlert")//?address=<address>
 	public ChildAlertAgregV2 getChildAlert(@RequestParam String address) {
@@ -128,9 +108,9 @@ public class SafetynetalertController {
 		controllerLogger.info("URI flood/"+stations+", displayed");
 		List<FloodStations> iFloodStations = new ArrayList<FloodStations>();
 		stations.forEach(station->{	
-		System.out.println(station);
+		//System.out.println(station);
 		iFloodStations.addAll(safetynetServiceController.getFloodStations(station));
-		iFloodStations.forEach(System.out::println);
+		//iFloodStations.forEach(System.out::println);
 		});
 		return iFloodStations;
 	}
