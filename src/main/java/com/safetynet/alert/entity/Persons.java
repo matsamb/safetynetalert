@@ -49,4 +49,14 @@ public class Persons implements Serializable{
 	@JsonProperty("email")
 	String email;
 
+	public Object clone() {
+		Persons person = null;
+		try {
+			person = (Persons)super.clone();
+		}catch(CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return person;
+		
+	}
 }
