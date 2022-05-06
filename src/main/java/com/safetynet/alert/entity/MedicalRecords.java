@@ -1,53 +1,37 @@
 package com.safetynet.alert.entity;
 
-import java.io.Serializable;
-import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.OrderColumn;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@IdClass(com.safetynet.alert.entity.PersonsKey.class)
-@Entity
+
+@Component
 @Data
-public class  MedicalRecords implements Serializable, Cloneable {
+public class  MedicalRecords implements Cloneable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	@Id
 	@JsonProperty("firstName")
-	@Column(name="first_name")
-	String firstName;
-	@Id
+	private String firstName;
+
 	@JsonProperty("lastName")
-	@Column(name="last_name")
-	String lastName;
+	private String lastName;
 	
 	@JsonProperty("birthdate")
-	@Column(name="birth_date")
-	String birthDate;
+	private String birthDate;
 	
-	@Embedded
 	@JsonProperty("medications")
-	@ElementCollection
-	@OrderColumn
-	Medications[] medications;
+	@Getter(value=AccessLevel.NONE)
+	@Setter(value=AccessLevel.NONE)
+	private Medications[] medications;
 	
-	@Embedded
 	@JsonProperty("allergies")
-	@ElementCollection
-	@OrderColumn
-	Allergies[] allergies;
+	@Getter(value=AccessLevel.NONE)
+	@Setter(value=AccessLevel.NONE)
+	private Allergies[] allergies;
 	
 	public MedicalRecords() {}
 	
@@ -56,66 +40,36 @@ public class  MedicalRecords implements Serializable, Cloneable {
 		this.lastName = lastName;
 		this.birthDate = birthDate;
 		this.medications = (Medications[])medications.clone();
-		this.allergies = (Allergies[]) allergies.clone();
-	}
-
-	public String getFirstName() {
-		return this.firstName ;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getBirthDate() {
-		return birthDate;
-	}
-
-	public void setBirthDate(String birthDate) {
-		this.birthDate = birthDate;
+		this.allergies = (Allergies[])allergies.clone();
 	}
 
 	public Medications[] getMedications() {
-		return (Medications[]) this.medications.clone();
+		return (Medications[])this.medications;
 	}
 
 	public void setMedications(Medications[] medications) {
-		this.medications = (Medications[])medications.clone();
+		this.medications = (Medications[])medications;
 	}
 
 	public Allergies[] getAllergies() {
-		return (Allergies[]) this.allergies.clone();
+		return (Allergies[])this.allergies;
 	}
 
 	public void setAllergies(Allergies[] allergies) {
-		this.allergies = (Allergies[]) allergies.clone();
-	}
+		this.allergies = (Allergies[])allergies.clone();
+	}	
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(allergies, birthDate, firstName, lastName, medications);
+	public Object clone() {
+		MedicalRecords copy = null;
+		try {
+			copy = (MedicalRecords) super.clone();
+		}catch(CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		copy.setMedications((Medications[])medications.clone());
+		copy.setAllergies((Allergies[])allergies.clone());
+		
+		return copy;		
 	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		MedicalRecords other = (MedicalRecords) obj;
-		return allergies == other.allergies && Objects.equals(birthDate, other.birthDate)
-				&& Objects.equals(firstName, other.firstName) && Objects.equals(lastName, other.lastName)
-				&& medications == other.medications;
-	}
-
+	
 }

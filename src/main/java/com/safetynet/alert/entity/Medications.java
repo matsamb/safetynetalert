@@ -4,30 +4,23 @@ import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Embeddable
-public class Medications implements Serializable{
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Medications implements Serializable, Cloneable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	String medication;
-	
-	public Medications() {}
-	
-	public Medications(String medication) {
-		this.medication = medication;
-	}
 
-	public String getMedication() {
-		return medication;
-	}
-
-	public void setMedication(String medication) {
-		this.medication = medication;
-	}
-
-/*	@Override
+	@Override
 	public Object clone() {
 		Object medicationsClone = null;
 		try {
@@ -37,5 +30,5 @@ public class Medications implements Serializable{
 		}	
 		return medicationsClone;
 	}
-	*/
+	
 }

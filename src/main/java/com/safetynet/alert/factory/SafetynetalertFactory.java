@@ -23,7 +23,7 @@ public class SafetynetalertFactory {
 
 	//@Bean
 	public Resource loadSafetynetAlertTestDataWithClassPathResource() {
-		return new ClassPathResource("/jsonTestFile.json");
+		return new ClassPathResource("/testFile.json");
 	}
 
 }

@@ -1,3 +1,3 @@
-use prodalert;
+/*use prodalert;
 
-SET GLOBAL local_infile = true;
+SET GLOBAL local_infile = true;*/
