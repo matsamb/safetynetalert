@@ -44,15 +44,15 @@ public class  MedicalRecords implements Cloneable {
 	}
 
 	public Medications[] getMedications() {
-		return (Medications[])this.medications;
+		return (Medications[])this.medications.clone();
 	}
 
 	public void setMedications(Medications[] medications) {
-		this.medications = (Medications[])medications;
+		this.medications = (Medications[])medications.clone();
 	}
 
 	public Allergies[] getAllergies() {
-		return (Allergies[])this.allergies;
+		return (Allergies[])this.allergies.clone();
 	}
 
 	public void setAllergies(Allergies[] allergies) {
