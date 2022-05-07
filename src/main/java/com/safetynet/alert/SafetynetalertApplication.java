@@ -9,6 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.safetynet.alert.factory.SafetynetalertFactory;
 import com.safetynet.alert.service.firestations.FirestationsDaoLoaderService;
 import com.safetynet.alert.service.persons.PersonsDaoLoaderService;
 import com.safetynet.alert.service.records.MedicalRecordsDaoLoaderService;

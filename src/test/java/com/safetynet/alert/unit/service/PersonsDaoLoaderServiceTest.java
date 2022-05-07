@@ -11,6 +11,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.io.ClassPathResource;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.alert.DAO.PersonsDAO;
 import com.safetynet.alert.IO.SourceReader;
@@ -51,7 +53,7 @@ public class PersonsDaoLoaderServiceTest {
 		
 		
 		when(safetynetalertFactory.getObjectMapper()).thenReturn(oMapper);
-		when(sourceReader.jsonToString()).thenReturn(s);		
+		when(sourceReader.jsonToString()).thenReturn(s);
 				
 		personsDaoLoaderService.stringToDAO();
 
