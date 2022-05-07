@@ -1,5 +1,8 @@
 package com.safetynet.alert.entity;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -59,6 +62,8 @@ public class  MedicalRecords implements Cloneable {
 		this.allergies = (Allergies[])allergies.clone();
 	}	
 
+	
+	
 	public Object clone() {
 		MedicalRecords copy = null;
 		try {
@@ -71,5 +76,6 @@ public class  MedicalRecords implements Cloneable {
 		
 		return copy;		
 	}
-	
+
+
 }
