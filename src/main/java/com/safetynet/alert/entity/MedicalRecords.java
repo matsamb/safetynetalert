@@ -1,6 +1,5 @@
 package com.safetynet.alert.entity;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 import org.springframework.stereotype.Component;
@@ -62,7 +61,24 @@ public class  MedicalRecords implements Cloneable {
 		this.allergies = (Allergies[])allergies.clone();
 	}	
 
-	
+	@Override
+	public int hashCode() {
+		return Objects.hash(allergies, birthDate, firstName, lastName, medications);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MedicalRecords other = (MedicalRecords) obj;
+		return allergies == other.allergies && Objects.equals(birthDate, other.birthDate)
+				&& Objects.equals(firstName, other.firstName) && Objects.equals(lastName, other.lastName)
+				&& medications == other.medications;
+	}
 	
 	public Object clone() {
 		MedicalRecords copy = null;

@@ -11,8 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.core.io.ClassPathResource;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.safetynet.alert.DAO.PersonsDAO;
 import com.safetynet.alert.IO.SourceReader;
