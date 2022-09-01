@@ -9,6 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.safetynet.alert.DAO.FirestationsDAO;
 import com.safetynet.alert.service.firestations.FirestationsDaoLoaderService;
 import com.safetynet.alert.service.persons.PersonsDaoLoaderService;
 import com.safetynet.alert.service.records.MedicalRecordsDaoLoaderService;
@@ -30,6 +31,9 @@ public class SafetynetalertApplication implements CommandLineRunner{
 	@Autowired
 	private MedicalRecordsDaoLoaderService medicalRecordsDaoLoaderService;
 	
+	@Autowired
+	FirestationsDAO firestationsDAO;
+	
 	@Override
 	public void run(String... args) throws Exception {
 
@@ -38,6 +42,7 @@ public class SafetynetalertApplication implements CommandLineRunner{
 		firestationsDaoLoaderService.stringToDAO();
 		medicalRecordsDaoLoaderService.stringToDAO();
 
+/**/		firestationsDAO.findAllFirestations().forEach(System.out::println);
 		safetynetalertApplicationLogger.info("data loaded into Lists of DAOs");
 	}
 	

@@ -45,7 +45,11 @@ public class ChildAlertUrlController {
 		Calendar lendar = Calendar.getInstance();
 		lendar.setTimeInMillis(System.currentTimeMillis()); 
 		
+		childAlertUrlControllerLogger.info(findPersonByAddressServiceChildAlertUrlController.findPersonByAddress(address));
+		
 		for (Persons p :findPersonByAddressServiceChildAlertUrlController.findPersonByAddress(address)) {
+			childAlertUrlControllerLogger.debug("loop on found persons at "+p);
+
 			childAlertUrlControllerLogger.debug("loop on found persons at "+address);
 
 			for (MedicalRecords m :findMedicalRecordsByFirstNameAndLastNameServiceChildAlertUrlController.findByFirstNameAndLastName(p.getFirstName(), p.getLastName()) ) {
@@ -57,30 +61,40 @@ public class ChildAlertUrlController {
 				int mo = lendar.get(Calendar.MONTH) - Integer.parseInt(date[0]);//month
 				int d = lendar.get(Calendar.DAY_OF_MONTH) - Integer.parseInt(date[1]);//day
 				
-				if (y<18 || y == 18 && mo<0 || y == 18 && mo == 0 && d<0) {
+				childAlertUrlControllerLogger.info(m.getFirstName()+" "+y+" "+mo+" "+d);
+				
+				if (y<18 || (y == 18 && mo<0) || (y == 18 && mo == 0 && d<0)) {
 					child.setFirstName(m.getFirstName());
 					child.setLastName(m.getLastName());
 					child.setAge(y);
 					children.add((ChildAlertDTO) child.clone());
-					childAlertUrlControllerLogger.debug("child added");
+					childAlertUrlControllerLogger.debug((ChildAlertDTO) child.clone());
+					childAlertUrlControllerLogger.info("child added");
 				}else{
 					adult.setFirstName(m.getFirstName());
 					adult.setLastName(m.getLastName());
 					adult.setAge(y);
 					adults.add((ChildAlertDTO) adult.clone());
-					childAlertUrlControllerLogger.debug("adult added");
+					childAlertUrlControllerLogger.debug((ChildAlertDTO) adult.clone());
+					childAlertUrlControllerLogger.info("adult added");
 				}			
 			}
 		}
+		childAlertUrlControllerLogger.debug(children);
+		childAlertUrlControllerLogger.debug(adults);
 		if(children.size()>0) {
 			result.setChild(List.copyOf(children));
 			result.setAdult(List.copyOf(adults));
 			childAlertUrlControllerLogger.info("ChildAlert URL details for "+address + " displayed");
+			childAlertUrlControllerLogger.debug(result);
+			childAlertUrlControllerLogger.debug((ChildAlertAgregDTO)result.clone());
+			return (ChildAlertAgregDTO)result.clone();
 		}else {
 			childAlertUrlControllerLogger.info("No child at "+address );
+			return null;
 		}
 		
-		return (ChildAlertAgregDTO)result.clone();
+		
 	}
 	
 }

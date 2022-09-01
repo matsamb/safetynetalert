@@ -44,7 +44,7 @@ public class ChildAlertAgregDTO implements Cloneable{
 			e.printStackTrace();
 		}
 		
-		copy.setAdult(List.copyOf(this.getChild()));
+		copy.setAdult(List.copyOf(this.getAdult()));
 		copy.setChild(List.copyOf(this.getChild()));
 		return copy;
 	}
