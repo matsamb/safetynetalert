@@ -20,7 +20,7 @@ public class FirestationsDAO {
 	public Firestations findFirestationsByAddress(String address) {
 		Firestations result = new Firestations() ;
 		for(Firestations p: FirestationsDAO.firestations) {
-			if (Objects.equals(p.getAddress(), address)) { 
+			if (address.contains(p.getAddress())) { 
 				result=(Firestations)p.clone();
 			}
 		}
@@ -48,7 +48,7 @@ public class FirestationsDAO {
 	public void deleteFirestationsByAddress(String address){
 		int i = 0;
 		for(Firestations p: List.copyOf(FirestationsDAO.firestations)) {
-			if (Objects.equals(p.getAddress(),address)) { 
+			if (address.contains(p.getAddress())) { 
 				FirestationsDAO.firestations.remove(i);
 				i--;
 			}

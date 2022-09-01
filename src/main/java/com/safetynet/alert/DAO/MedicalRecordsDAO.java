@@ -24,7 +24,7 @@ public class MedicalRecordsDAO {
 		List<MedicalRecords> result = new ArrayList<>() ;
 		for(MedicalRecords me: List.copyOf(MedicalRecordsDAO.medicalRecords)) {
 			if (firstName.contains(me.getFirstName())  && lastName.contains(me.getLastName())) {
-				System.out.println(me);
+				//System.out.println(me);
 				result.add((MedicalRecords)me.clone());
 			}
 		}

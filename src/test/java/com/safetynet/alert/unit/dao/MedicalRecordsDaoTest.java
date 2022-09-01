@@ -103,7 +103,7 @@ public class MedicalRecordsDaoTest {
 		
 		medicalRecordsDao.deleteMedicalRecordsByFirstNameAndLastName("Tenley", "Boyd");
 				
-		assertThat(medicalRecordsDao.findAllMedicalRecords()).hasSize(0);
+		assertThat(medicalRecordsDao.findAllMedicalRecords()).hasSize(1);
 		
 	}
 	
